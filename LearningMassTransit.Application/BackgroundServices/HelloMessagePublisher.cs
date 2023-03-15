@@ -2,13 +2,13 @@
 using MassTransit;
 using Microsoft.Extensions.Hosting;
 
-namespace GettingStarted
+namespace LearningMassTransit.Application.BackgroundServices
 {
-    public class Worker : BackgroundService
+    public class HelloMessagePublisher : BackgroundService
     {
         private readonly IBus _bus;
 
-        public Worker(IBus bus)
+        public HelloMessagePublisher(IBus bus)
         {
             _bus = bus;
         }

@@ -1,4 +1,4 @@
-using GettingStarted;
+using LearningMassTransit.Application.BackgroundServices;
 using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -61,6 +61,6 @@ void ConfigureMassTransit(IServiceCollection services, IConfiguration configurat
         }
 
         // processors
-        services.AddHostedService<Worker>();
+        services.AddHostedService<HelloMessagePublisher>();
     });
 }
