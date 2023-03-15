@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Worker">
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -8,5 +8,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
     <PackageReference Include="MassTransit" Version="[8.0.0,9.0)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LearningMassTransit.Infrastructure\LearningMassTransit.Infrastructure.csproj" />
   </ItemGroup>
 </Project>

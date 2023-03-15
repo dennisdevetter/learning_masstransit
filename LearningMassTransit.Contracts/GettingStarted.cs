@@ -1,4 +1,4 @@
-namespace Contracts
+namespace LearningMassTransit.Contracts
 {
     public record HelloMessage
     {

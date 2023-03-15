@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
+    <PackageReference Include="MassTransit" Version="[8.0.0,9.0)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LearningMassTransit.Consumers\LearningMassTransit.Consumers.csproj" />
+    <ProjectReference Include="..\LearningMassTransit.Processor\LearningMassTransit.Processor.csproj" />
+  </ItemGroup>
+
+</Project>
