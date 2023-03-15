@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearningMassTransit.Infrast
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearningMassTransit.Consumers", "..\LearningMassTransit.Consumers\LearningMassTransit.Consumers.csproj", "{46B62CD4-134C-461A-A5C4-0970EDD1DE20}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearningMassTransit.Processor.Api", "..\LearningMassTransit.Processor.Api\LearningMassTransit.Processor.Api.csproj", "{5C4CCB0D-3EAB-4AF9-BFC1-3CADD3F14A5A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{46B62CD4-134C-461A-A5C4-0970EDD1DE20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46B62CD4-134C-461A-A5C4-0970EDD1DE20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46B62CD4-134C-461A-A5C4-0970EDD1DE20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C4CCB0D-3EAB-4AF9-BFC1-3CADD3F14A5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C4CCB0D-3EAB-4AF9-BFC1-3CADD3F14A5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C4CCB0D-3EAB-4AF9-BFC1-3CADD3F14A5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C4CCB0D-3EAB-4AF9-BFC1-3CADD3F14A5A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

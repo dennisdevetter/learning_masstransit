@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\LearningMassTransit.Consumers\LearningMassTransit.Consumers.csproj" />
     <ProjectReference Include="..\LearningMassTransit.Processor\LearningMassTransit.Processor.csproj" />
+    <ProjectReference Include="..\LearningMassTransit.RabbitMQ\LearningMassTransit.RabbitMQ.csproj" />
   </ItemGroup>
 
 </Project>
