@@ -9,18 +9,19 @@ namespace LearningMassTransit.Api.Controllers;
 public class BloggingController : ControllerBase
 {
     private readonly ILogger<BloggingController> _logger;
+    private readonly BloggingContext _db;
 
-    public BloggingController(ILogger<BloggingController> logger)
+    public BloggingController(ILogger<BloggingController> logger, BloggingContext db)
     {
         _logger = logger;
+        _db = db;
     }
 
     [HttpGet]
     public IActionResult Get()
     {
-        var db = new BloggingContext();
 
-        var blogs = db.Blogs.ToList();
+        var blogs = _db.Blogs.ToList();
 
         return Ok(blogs);
     }
@@ -29,10 +30,8 @@ public class BloggingController : ControllerBase
     [Route("create")]
     public IActionResult Create()
     {
-        var db = new BloggingContext();
-
-        db.Add(new Blog { Url = "http://blogs.msdn.com/adonet" });
-        db.SaveChanges();
+        _db.Add(new Blog { Url = "http://blogs.msdn.com/adonet" });
+        _db.SaveChanges();
 
         return Ok("created");
     }

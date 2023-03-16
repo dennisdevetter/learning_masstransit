@@ -1,53 +1,59 @@
 
 using LearningMassTransit.Consumers;
+using LearningMassTransit.DataAccess;
 using MassTransit;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using NSwag;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddControllers();
-builder.Services.AddOpenApiDocument(cfg => cfg.PostProcess = d =>
-{
-    d.Info.Title = "Api";
-    d.Info.Contact = new OpenApiContact
-    {
-        Name = "Sample",
-    };
-});
-
 ConfigureServices(builder.Services, builder.Configuration);
 
 var app = builder.Build();
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseDeveloperExceptionPage();
-}
-
-// Configure the HTTP request pipeline.
-
-app.UseHttpsRedirection();
-
-app.UseOpenApi();
-app.UseSwaggerUi3();
-
-app.UseRouting();
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.UseEndpoints(endpoints =>
-{
-
-});
+ConfigureApp();
 
 await app.RunAsync();
 
+void ConfigureApp()
+{
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseDeveloperExceptionPage();
+    }
+
+    // Configure the HTTP request pipeline.
+
+    app.UseHttpsRedirection();
+
+    app.UseOpenApi();
+    app.UseSwaggerUi3();
+
+    app.UseRouting();
+    app.UseAuthorization();
+
+    app.MapControllers();
+
+    app.UseEndpoints(endpoints =>
+    {
+
+    });
+}
+
 void ConfigureServices(IServiceCollection services, IConfiguration configuration)
 {
+    services.AddEndpointsApiExplorer();
+    services.AddControllers();
+    services.AddOpenApiDocument(cfg => cfg.PostProcess = d =>
+    {
+        d.Info.Title = "Api";
+        d.Info.Contact = new OpenApiContact
+        {
+            Name = "Sample",
+        };
+    });
+
+    services.AddDbContext<BloggingContext>(options => options.UseNpgsql("Server=127.0.0.1;Port=5432;Database=lara;User Id=postgres;Password=postgres;"));
+
     ConfigureMassTransit(services, configuration);
 }
 
