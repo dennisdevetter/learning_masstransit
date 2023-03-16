@@ -15,9 +15,16 @@ await app.RunAsync();
 
 void ConfigureApp()
 {
-    if (app.Environment.IsDevelopment())
+
+    if (!app.Environment.IsDevelopment())
+    {
+        app.UseExceptionHandler("/Error");
+        app.UseHsts();
+    }
+    else
     {
         app.UseDeveloperExceptionPage();
+        app.UseMigrationsEndPoint();
     }
 
     // Configure the HTTP request pipeline.
