@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearningMassTransit.Consume
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearningMassTransit.Processor.Api", "LearningMassTransit.Processor.Api\LearningMassTransit.Processor.Api.csproj", "{5C4CCB0D-3EAB-4AF9-BFC1-3CADD3F14A5A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearningMassTransit.Application", "LearningMassTransit.Application\LearningMassTransit.Application.csproj", "{3E842FD6-0524-4B68-B03B-24802E3A5DF2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearningMassTransit.Application", "LearningMassTransit.Application\LearningMassTransit.Application.csproj", "{3E842FD6-0524-4B68-B03B-24802E3A5DF2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearningMassTransit.DataAccess", "LearningMassTransit.DataAccess\LearningMassTransit.DataAccess.csproj", "{7A473EFC-FD44-4FD1-AACA-00CAA1F6E001}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{3E842FD6-0524-4B68-B03B-24802E3A5DF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E842FD6-0524-4B68-B03B-24802E3A5DF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E842FD6-0524-4B68-B03B-24802E3A5DF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A473EFC-FD44-4FD1-AACA-00CAA1F6E001}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A473EFC-FD44-4FD1-AACA-00CAA1F6E001}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A473EFC-FD44-4FD1-AACA-00CAA1F6E001}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A473EFC-FD44-4FD1-AACA-00CAA1F6E001}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

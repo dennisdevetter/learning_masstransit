@@ -1,64 +1,86 @@
-using System.Threading.Tasks;
+
 using LearningMassTransit.Consumers;
 using MassTransit;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using NSwag;
 
-namespace GettingStarted
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddControllers();
+builder.Services.AddOpenApiDocument(cfg => cfg.PostProcess = d =>
 {
-    public class Program
+    d.Info.Title = "Api";
+    d.Info.Contact = new OpenApiContact
     {
-        public static async Task Main(string[] args)
+        Name = "Sample",
+    };
+});
+
+ConfigureServices(builder.Services, builder.Configuration);
+
+var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+
+// Configure the HTTP request pipeline.
+
+app.UseHttpsRedirection();
+
+app.UseOpenApi();
+app.UseSwaggerUi3();
+
+app.UseRouting();
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.UseEndpoints(endpoints =>
+{
+
+});
+
+await app.RunAsync();
+
+void ConfigureServices(IServiceCollection services, IConfiguration configuration)
+{
+    ConfigureMassTransit(services, configuration);
+}
+
+void ConfigureMassTransit(IServiceCollection services, IConfiguration configuration)
+{
+    services.AddMassTransit(x =>
+    {
+        x.SetKebabCaseEndpointNameFormatter();
+
+        x.AddConsumers(typeof(GettingStartedConsumer).Assembly);
+
+        var useRabbitMq = configuration.GetValue<bool>("Masstransit:UseRabbitMq");
+
+        if (useRabbitMq)
         {
-            await CreateHostBuilder(args).Build().RunAsync();
-        }
-
-        public static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args).ConfigureServices((hostContext, services) => { ConfigureApplication(services, hostContext); });
-
-        private static void ConfigureApplication(IServiceCollection services, HostBuilderContext hostBuilderContext)
-        {
-            var configuration = hostBuilderContext.Configuration;
-
-            ConfigureMassTransit(services, configuration);
-        }
-
-        private static void ConfigureMassTransit(IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddMassTransit(x =>
+            x.UsingRabbitMq((context, cfg) =>
             {
-                x.SetKebabCaseEndpointNameFormatter();
-
-                // By default, sagas are in-memory, but should be changed to a durable
-                // saga repository.
-                x.SetInMemorySagaRepositoryProvider();
-
-                x.AddConsumers(typeof(GettingStartedConsumer).Assembly);
-
-                var useRabbitMq = configuration.GetValue<bool>("Masstransit:UseRabbitMq");
-
-                if (useRabbitMq)
+                cfg.Host("localhost", "/", h =>
                 {
-                    x.UsingRabbitMq((context, cfg) =>
-                    {
-                        cfg.Host("localhost", "/", h => {
-                            h.Username("guest");
-                            h.Password("guest");
+                    h.Username("guest");
+                    h.Password("guest");
 
-                        });
-                        cfg.ConfigureEndpoints(context);
-                    });
-                }
-
-                else
-                {
-                    x.UsingInMemory((context, cfg) =>
-                    {
-                        cfg.ConfigureEndpoints(context);
-                    });
-                }
-
+                });
+                cfg.ConfigureEndpoints(context);
             });
         }
-    }
+
+        else
+        {
+            x.UsingInMemory((context, cfg) =>
+            {
+                cfg.ConfigureEndpoints(context);
+            });
+        }
+    });
 }
