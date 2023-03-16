@@ -3,7 +3,6 @@ using LearningMassTransit.Consumers;
 using LearningMassTransit.DataAccess;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using NSwag;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -52,9 +51,16 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
         };
     });
 
-    services.AddDbContext<BloggingContext>(options => options.UseNpgsql("Server=127.0.0.1;Port=5432;Database=lara;User Id=postgres;Password=postgres;"));
+    ConfigureDatabase(services, configuration);
 
     ConfigureMassTransit(services, configuration);
+}
+
+void ConfigureDatabase(IServiceCollection services, IConfiguration configuration)
+{
+    var connectionstring = configuration.GetValue<string>("PostgressDatabase:Connectionstring");
+
+    services.AddDbContext<BloggingContext>(options => options.UseNpgsql(connectionstring));
 }
 
 void ConfigureMassTransit(IServiceCollection services, IConfiguration configuration)
