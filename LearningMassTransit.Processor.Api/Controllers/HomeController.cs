@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace LearningMassTransit.Processor.Api.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("")]
 public class HomeController : ControllerBase
 {
     private readonly ILogger<HomeController> _logger;
@@ -16,6 +16,6 @@ public class HomeController : ControllerBase
     [HttpGet]
     public IActionResult Get()
     {
-        return Ok("running");
+        return Ok("processor running");
     }
 }

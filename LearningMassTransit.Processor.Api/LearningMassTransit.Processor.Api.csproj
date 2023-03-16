@@ -12,12 +12,14 @@
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
 		<PackageReference Include="MassTransit" Version="[8.0.0,9.0)" />
 		<PackageReference Include="MassTransit.RabbitMQ" Version="[8.0.0,9.0)" />
+		<PackageReference Include="NSwag.AspNetCore" Version="13.16.1" />
 	</ItemGroup>
 
 
 	<ItemGroup>
 	  <ProjectReference Include="..\LearningMassTransit.Application\LearningMassTransit.Application.csproj" />
 	  <ProjectReference Include="..\LearningMassTransit.Consumers\LearningMassTransit.Consumers.csproj" />
+	  <ProjectReference Include="..\LearningMassTransit.DataAccess\LearningMassTransit.DataAccess.csproj" />
 	</ItemGroup>
 
 </Project>
