@@ -1,38 +1,31 @@
-using LearningMassTransit.DataAccess;
-using LearningMassTransit.DataAccess.Blogging;
+using LearningMassTransit.Contracts.Dtos;
+using LearningMassTransit.Contracts.Requests;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LearningMassTransit.Api.Controllers;
 
 [ApiController]
 [Route("blogging")]
-public class BloggingController : ControllerBase
+public class BloggingController : AppController<BloggingController>
 {
-    private readonly ILogger<BloggingController> _logger;
-    private readonly LaraDbContext _db;
-
-    public BloggingController(ILogger<BloggingController> logger, LaraDbContext db)
+    public BloggingController(IMediator mediator, ILogger<BloggingController> logger) : base(mediator, logger)
     {
-        _logger = logger;
-        _db = db;
     }
 
+
     [HttpGet]
-    public IActionResult Get()
+    public async Task<IActionResult> Get()
     {
-
-        var blogs = _db.Blogs.ToList();
-
-        return Ok(blogs);
+        var request = new GetBlogsRequest();
+        return await ExecuteRequest<GetBlogsRequest, IList<BlogDto>>(request);
     }
 
     [HttpPost]
     [Route("create")]
-    public IActionResult Create()
+    public async Task<IActionResult> Create()
     {
-        _db.Add(new Blog { Url = "http://blogs.msdn.com/adonet" });
-        _db.SaveChanges();
-
-        return Ok("created");
+        var request = new CreateBlogRequest("http://blogs.msdn.com/adonet");
+        return await ExecuteRequest<CreateBlogRequest, string>(request);
     }
 }
