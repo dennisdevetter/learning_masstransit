@@ -1,6 +1,7 @@
-﻿using LearningMassTransit.Infrastructure.Database;
+﻿using System.Collections.Generic;
+using LearningMassTransit.Infrastructure.Database;
 
-namespace LearningMassTransit.DataAccess.Blogging;
+namespace LearningMassTransit.Domain.Blogging;
 
 public class Blog : Entity<int>
 {

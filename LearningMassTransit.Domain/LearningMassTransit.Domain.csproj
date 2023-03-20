@@ -1,14 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-	  <RootNamespace>LearningMassTransit.DataAccess</RootNamespace>
+	  <!--<Nullable>enable</Nullable>-->
+	  <RootNamespace>LearningMassTransit.Domain</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\LearningMassTransit.Infrastructure\LearningMassTransit.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Lara\" />
   </ItemGroup>
 
 </Project>

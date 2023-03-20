@@ -1,7 +1,10 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using LearningMassTransit.Contracts.Dtos;
 using LearningMassTransit.Contracts.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace LearningMassTransit.Api.Controllers;
 

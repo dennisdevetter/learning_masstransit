@@ -1,5 +1,8 @@
-﻿using MediatR;
+﻿using System;
+using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace LearningMassTransit.Api.Controllers;
 
@@ -18,7 +21,7 @@ public abstract class AppController<T> : ControllerBase
     /// Creates a new instance of the <see cref="AppController{T}"/>.
     /// </summary>
     /// <param name="mediator">The <see cref="IMediator"/> instance.</param>
-    /// <param name="logger">The <see cref="ILogger{TCategoryName}"/> instance.</param>
+    /// <param name="logger">The <see cref="ILogger"/> instance.</param>
     protected AppController(IMediator mediator, ILogger<T> logger)
     {
         Mediator = mediator;

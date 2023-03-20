@@ -1,6 +1,6 @@
 ﻿using LearningMassTransit.Infrastructure.Database;
 
-namespace LearningMassTransit.DataAccess.Blogging;
+namespace LearningMassTransit.Domain.Blogging;
 
 public class Post : Entity<int>
 {

@@ -2,8 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+	  <!--<Nullable>enable</Nullable>-->
 	  <RootNamespace>LearningMassTransit.DataAccess</RootNamespace>
   </PropertyGroup>
 
@@ -30,7 +29,6 @@
 	<ItemGroup>
 	  <Folder Include="Configuration\" />
 	  <Folder Include="Constants\" />
-	  <Folder Include="Migrations\" />
 	</ItemGroup>
 
 

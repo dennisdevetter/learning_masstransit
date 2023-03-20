@@ -10,6 +10,10 @@ using Correlate.DependencyInjection;
 using LearningMassTransit.Application.Handlers;
 using LearningMassTransit.Infrastructure.Options;
 using LearningMassTransit.Infrastructure.Security;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigureServices(builder.Services, builder.Configuration);

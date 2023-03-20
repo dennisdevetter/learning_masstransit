@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using LearningMassTransit.Contracts;
 using MassTransit;
 using Microsoft.Extensions.Logging;

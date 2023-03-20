@@ -1,5 +1,5 @@
-﻿using LearningMassTransit.DataAccess.Blogging;
-using LearningMassTransit.DataAccess.Constants;
+﻿using LearningMassTransit.DataAccess.Constants;
+using LearningMassTransit.Domain.Blogging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

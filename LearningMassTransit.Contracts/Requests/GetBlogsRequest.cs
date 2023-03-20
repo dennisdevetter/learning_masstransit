@@ -1,4 +1,5 @@
-﻿using LearningMassTransit.Contracts.Dtos;
+﻿using System.Collections.Generic;
+using LearningMassTransit.Contracts.Dtos;
 using MediatR;
 
 namespace LearningMassTransit.Contracts.Requests;
