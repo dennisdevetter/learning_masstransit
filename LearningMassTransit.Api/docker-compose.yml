@@ -14,3 +14,4 @@
           - '5432:5432'
         volumes: 
           - ../db/postgres-data:/var/lib/postgresql/data          
+          - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
