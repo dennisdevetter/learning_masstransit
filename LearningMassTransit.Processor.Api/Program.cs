@@ -4,12 +4,15 @@ using LearningMassTransit.Consumers;
 using LearningMassTransit.DataAccess;
 using LearningMassTransit.Infrastructure.Options;
 using LearningMassTransit.Infrastructure.Security;
+using LearningMassTransit.Processor.Api.Jobs;
 using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NSwag;
+using Quartz;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigureServices(builder.Services, builder.Configuration);
@@ -134,6 +137,30 @@ void ConfigureMassTransit(IServiceCollection services, IConfiguration configurat
     // processors
     //services.AddHostedService<HelloMessagePublisher>();
     services.AddHostedService<WizardCreatedTestPublisher>();
+
+    services.AddQuartz(q =>
+    {
+        // as of 3.3.2 this also injects scoped services (like EF DbContext) without problems
+        q.UseMicrosoftDependencyInjectionJobFactory();
+
+        // quickest way to create a job with single trigger is to use ScheduleJob
+        // (requires version 3.2)
+        q.ScheduleJob<WizzardPollingJob>(trigger => trigger
+            .WithIdentity("Combined Configuration Trigger")
+            .StartAt(DateBuilder.EvenSecondDate(DateTimeOffset.UtcNow.AddSeconds(7)))
+            .WithDailyTimeIntervalSchedule(x => x.WithInterval(10, IntervalUnit.Second))
+            .WithDescription("my awesome trigger configured for a job with single call")
+        );
+    });
+
+    services.AddTransient<WizzardPollingJob>();
+
+    // Quartz.Extensions.Hosting allows you to fire background service that handles scheduler lifecycle
+    services.AddQuartzHostedService(options =>
+    {
+        // when shutting down we want jobs to complete gracefully
+        options.WaitForJobsToComplete = true;
+    });
 }
 
 
