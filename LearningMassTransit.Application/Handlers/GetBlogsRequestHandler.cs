@@ -7,6 +7,7 @@ using LearningMassTransit.Contracts.Requests;
 using LearningMassTransit.DataAccess;
 using LearningMassTransit.Domain.Blogging;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace LearningMassTransit.Application.Handlers;
 
@@ -21,7 +22,9 @@ public class GetBlogsRequestHandler : IRequestHandler<GetBlogsRequest, IList<Blo
 
     public async Task<IList<BlogDto>> Handle(GetBlogsRequest request, CancellationToken cancellationToken)
     {
-        var blogs = _db.Blogs.ToList();
+        var blogs = _db.Blogs
+            .Include(x => x.Posts)
+            .ToList();
 
         var dtos = blogs.Select(MapToBlogDto).ToList();
 
