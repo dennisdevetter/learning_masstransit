@@ -1,6 +1,7 @@
 
 using LearningMassTransit.Consumers;
 using LearningMassTransit.DataAccess;
+using LearningMassTransit.DataAccess.Models;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using NSwag;
@@ -43,6 +44,12 @@ void ConfigureApp()
     {
 
     });
+
+    using (var scope = app.Services.CreateScope())
+    {
+        var context = scope.ServiceProvider.GetRequiredService<BloggingContext>();
+        context.Database.Migrate();
+    }
 }
 
 void ConfigureServices(IServiceCollection services, IConfiguration configuration)

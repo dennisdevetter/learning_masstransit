@@ -19,12 +19,4 @@ _ReSharper.Caches/
 [Ii]ntegrationTests
 .idea/.idea.vip.web/.idea/workspace.xml
 
-src/MagdaConsole.Web/appsettings.Beta.json
-
-src/MagdaConsole.Web/appsettings.json
-
-src/MagdaConsole.Web/appsettings.Production.json
-
-src/MagdaConsole.Web/appsettings.Staging.json
-
-src/MagdaConsole.Web/appsettings.Test.json
+postgres-data/
