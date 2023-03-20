@@ -1,6 +1,8 @@
-﻿namespace LearningMassTransit.DataAccess.Models;
+﻿using LearningMassTransit.Infrastructure.Database;
 
-public class Post
+namespace LearningMassTransit.DataAccess.Blogging;
+
+public class Post : Entity<int>
 {
     public int PostId { get; set; }
     public string Title { get; set; }

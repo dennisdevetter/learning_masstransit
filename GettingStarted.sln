@@ -17,7 +17,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearningMassTransit.Process
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearningMassTransit.Application", "LearningMassTransit.Application\LearningMassTransit.Application.csproj", "{3E842FD6-0524-4B68-B03B-24802E3A5DF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearningMassTransit.DataAccess", "LearningMassTransit.DataAccess\LearningMassTransit.DataAccess.csproj", "{7A473EFC-FD44-4FD1-AACA-00CAA1F6E001}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearningMassTransit.DataAccess", "LearningMassTransit.DataAccess\LearningMassTransit.DataAccess.csproj", "{7A473EFC-FD44-4FD1-AACA-00CAA1F6E001}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearningMassTransit.Infrastructure.EntityFramework", "LearningMassTransit.Infrastructure.EntityFramework\LearningMassTransit.Infrastructure.EntityFramework.csproj", "{5B7DB51C-5D3E-4EE2-A849-15270FEA2697}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearningMassTransit.Domain", "LearningMassTransit.Domain\LearningMassTransit.Domain.csproj", "{C8EDFB10-CC27-41FA-8527-08DF25E59EDA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +61,14 @@ Global
 		{7A473EFC-FD44-4FD1-AACA-00CAA1F6E001}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A473EFC-FD44-4FD1-AACA-00CAA1F6E001}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A473EFC-FD44-4FD1-AACA-00CAA1F6E001}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B7DB51C-5D3E-4EE2-A849-15270FEA2697}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B7DB51C-5D3E-4EE2-A849-15270FEA2697}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B7DB51C-5D3E-4EE2-A849-15270FEA2697}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B7DB51C-5D3E-4EE2-A849-15270FEA2697}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8EDFB10-CC27-41FA-8527-08DF25E59EDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8EDFB10-CC27-41FA-8527-08DF25E59EDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8EDFB10-CC27-41FA-8527-08DF25E59EDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8EDFB10-CC27-41FA-8527-08DF25E59EDA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

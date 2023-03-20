@@ -10,6 +10,7 @@ using MediatR;
 using IMediator = MediatR.IMediator;
 using LearningMassTransit.Api.Controllers;
 using LearningMassTransit.Application.Handlers;
+using LearningMassTransit.Infrastructure.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigureServices(builder.Services, builder.Configuration);
@@ -50,11 +51,7 @@ void ConfigureApp()
 
     });
 
-    using (var scope = app.Services.CreateScope())
-    {
-        var context = scope.ServiceProvider.GetRequiredService<BloggingContext>();
-        context.Database.Migrate();
-    }
+    InitializeDatabase();
 }
 
 void ConfigureServices(IServiceCollection services, IConfiguration configuration)
@@ -79,9 +76,12 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
 
 void ConfigureDatabase(IServiceCollection services, IConfiguration configuration)
 {
-    var connectionstring = configuration.GetValue<string>("PostgressDatabase:Connectionstring");
+    var connection = configuration.GetValue<string>("PostgressDatabase:Connectionstring");
 
-    services.AddDbContext<BloggingContext>(options => options.UseNpgsql(connectionstring));
+    services.AddDataAccess(new DatabaseOptions
+    {
+        Connection = connection
+    });
 }
 
 void ConfigureMassTransit(IServiceCollection services, IConfiguration configuration)
@@ -121,4 +121,13 @@ void ConfigureMassTransit(IServiceCollection services, IConfiguration configurat
 void ConfigureMediatR(IServiceCollection services)
 {
     services.AddMediatR(typeof(CreateAdresVoorstelRequestHandler).GetTypeInfo().Assembly);
+}
+
+void InitializeDatabase()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var context = scope.ServiceProvider.GetRequiredService<LaraDbContext>();
+        context.Database.Migrate();
+    }
 }

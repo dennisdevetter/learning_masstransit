@@ -1,5 +1,5 @@
 using LearningMassTransit.DataAccess;
-using LearningMassTransit.DataAccess.Models;
+using LearningMassTransit.DataAccess.Blogging;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LearningMassTransit.Api.Controllers;
@@ -9,9 +9,9 @@ namespace LearningMassTransit.Api.Controllers;
 public class BloggingController : ControllerBase
 {
     private readonly ILogger<BloggingController> _logger;
-    private readonly BloggingContext _db;
+    private readonly LaraDbContext _db;
 
-    public BloggingController(ILogger<BloggingController> logger, BloggingContext db)
+    public BloggingController(ILogger<BloggingController> logger, LaraDbContext db)
     {
         _logger = logger;
         _db = db;

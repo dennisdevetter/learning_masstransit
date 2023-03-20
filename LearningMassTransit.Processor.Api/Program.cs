@@ -67,7 +67,7 @@ void ConfigureDatabase(IServiceCollection services, IConfiguration configuration
 {
     var connectionstring = configuration.GetValue<string>("PostgressDatabase:Connectionstring");
 
-    services.AddDbContext<BloggingContext>(options => options.UseNpgsql(connectionstring));
+    services.AddDbContext<LaraDbContext>(options => options.UseNpgsql(connectionstring));
 }
 
 void ConfigureMassTransit(IServiceCollection services, IConfiguration configuration)

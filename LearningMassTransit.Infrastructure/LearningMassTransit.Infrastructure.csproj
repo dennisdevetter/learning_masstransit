@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	  <RootNamespace>LearningMassTransit.Infrastructure</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,6 +16,11 @@
   <ItemGroup>
     <ProjectReference Include="..\LearningMassTransit.Consumers\LearningMassTransit.Consumers.csproj" />
     <ProjectReference Include="..\LearningMassTransit.RabbitMQ\LearningMassTransit.RabbitMQ.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Options\" />
+    <Folder Include="Security\" />
   </ItemGroup>
 
 </Project>

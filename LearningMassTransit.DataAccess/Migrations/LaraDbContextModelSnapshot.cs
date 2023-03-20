@@ -9,19 +9,20 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace LearningMassTransit.DataAccess.Migrations
 {
-    [DbContext(typeof(BloggingContext))]
-    partial class BloggingContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(LaraDbContext))]
+    partial class LaraDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasDefaultSchema("lara")
                 .HasAnnotation("ProductVersion", "6.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("LearningMassTransit.DataAccess.Models.Blog", b =>
+            modelBuilder.Entity("LearningMassTransit.DataAccess.Blogging.Blog", b =>
                 {
                     b.Property<int>("BlogId")
                         .ValueGeneratedOnAdd()
@@ -35,10 +36,10 @@ namespace LearningMassTransit.DataAccess.Migrations
 
                     b.HasKey("BlogId");
 
-                    b.ToTable("Blogs");
+                    b.ToTable("Blogs", "lara");
                 });
 
-            modelBuilder.Entity("LearningMassTransit.DataAccess.Models.Post", b =>
+            modelBuilder.Entity("LearningMassTransit.DataAccess.Blogging.Post", b =>
                 {
                     b.Property<int>("PostId")
                         .ValueGeneratedOnAdd()
@@ -51,22 +52,24 @@ namespace LearningMassTransit.DataAccess.Migrations
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(512)
+                        .HasColumnType("character varying(512)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
                     b.HasKey("PostId");
 
                     b.HasIndex("BlogId");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Posts", "lara");
                 });
 
-            modelBuilder.Entity("LearningMassTransit.DataAccess.Models.Post", b =>
+            modelBuilder.Entity("LearningMassTransit.DataAccess.Blogging.Post", b =>
                 {
-                    b.HasOne("LearningMassTransit.DataAccess.Models.Blog", "Blog")
+                    b.HasOne("LearningMassTransit.DataAccess.Blogging.Blog", "Blog")
                         .WithMany("Posts")
                         .HasForeignKey("BlogId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -75,7 +78,7 @@ namespace LearningMassTransit.DataAccess.Migrations
                     b.Navigation("Blog");
                 });
 
-            modelBuilder.Entity("LearningMassTransit.DataAccess.Models.Blog", b =>
+            modelBuilder.Entity("LearningMassTransit.DataAccess.Blogging.Blog", b =>
                 {
                     b.Navigation("Posts");
                 });
