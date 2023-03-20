@@ -1,5 +1,7 @@
-﻿using LearningMassTransit.Infrastructure.EntityFramework;
+﻿using LearningMassTransit.Domain;
+using LearningMassTransit.Infrastructure.EntityFramework;
 using LearningMassTransit.Infrastructure.EntityFramework.Hints;
+using LearningMassTransit.Infrastructure.Extensions;
 using LearningMassTransit.Infrastructure.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -21,7 +23,7 @@ public static class ServiceCollectionExtensions
 
         services.AddRepositories(typeof(ServiceCollectionExtensions).Assembly);
 
-        //services.AddScopedAsImplementedInterfaces<ArchiveUnitOfWork>();
+        services.AddScopedAsImplementedInterfaces<LaraUnitOfWork>();
 
         return services;
     }

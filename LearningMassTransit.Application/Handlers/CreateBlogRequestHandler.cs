@@ -1,24 +1,32 @@
 ﻿using LearningMassTransit.Contracts.Requests;
-using LearningMassTransit.DataAccess;
 using LearningMassTransit.DataAccess.Blogging;
+using LearningMassTransit.Domain;
 using MediatR;
 
 namespace LearningMassTransit.Application.Handlers;
 
 public class CreateBlogRequestHandler : IRequestHandler<CreateBlogRequest, string>
 {
-    private readonly LaraDbContext _db;
+    private readonly ILaraUnitOfWork _laraUnitOfWork;
 
-    public CreateBlogRequestHandler(LaraDbContext db)
+    public CreateBlogRequestHandler(ILaraUnitOfWork laraUnitOfWork)
     {
-        _db = db;
+        _laraUnitOfWork = laraUnitOfWork;
     }
 
-    public Task<string> Handle(CreateBlogRequest request, CancellationToken cancellationToken)
+    public async Task<string> Handle(CreateBlogRequest request, CancellationToken cancellationToken)
     {
-        _db.Add(new Blog { Url = "http://blogs.msdn.com/adonet" });
-        _db.SaveChanges();
+        using (var transaction = _laraUnitOfWork.BeginTransaction())
+        {
+            var blog = new Blog { Url = "http://blogs.msdn.com/adonet" };
 
-        return Task.FromResult("created");
+            await _laraUnitOfWork.Blogs.Add(blog, cancellationToken);
+
+            await _laraUnitOfWork.SaveChangesAsync(cancellationToken);
+
+            await transaction.Commit(cancellationToken);
+        }
+
+        return "created";
     }
 }

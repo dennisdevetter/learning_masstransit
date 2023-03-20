@@ -3,14 +3,13 @@ using System.Reflection;
 using LearningMassTransit.Consumers;
 using LearningMassTransit.DataAccess;
 using MassTransit;
-using MassTransit.Mediator;
 using Microsoft.EntityFrameworkCore;
 using NSwag;
 using MediatR;
-using IMediator = MediatR.IMediator;
-using LearningMassTransit.Api.Controllers;
+using Correlate.DependencyInjection;
 using LearningMassTransit.Application.Handlers;
 using LearningMassTransit.Infrastructure.Options;
+using LearningMassTransit.Infrastructure.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigureServices(builder.Services, builder.Configuration);
@@ -57,7 +56,9 @@ void ConfigureApp()
 void ConfigureServices(IServiceCollection services, IConfiguration configuration)
 {
     services.AddEndpointsApiExplorer();
+
     services.AddControllers();
+
     services.AddOpenApiDocument(cfg => cfg.PostProcess = d =>
     {
         d.Info.Title = "Api";
@@ -67,11 +68,25 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
         };
     });
 
+    ConfigureCorrelation(services);
+
     ConfigureDatabase(services, configuration);
 
     ConfigureMassTransit(services, configuration);
 
     ConfigureMediatR(services);
+
+    ConfigureApplicationContext(services);
+}
+
+void ConfigureCorrelation(IServiceCollection services)
+{
+    services.AddCorrelate(options => options.RequestHeaders = new[] { "X-Correlation-ID" });
+
+    services.AddHeaderPropagation(options =>
+    {
+        options.Headers.Add("x-correlation-id");
+    });
 }
 
 void ConfigureDatabase(IServiceCollection services, IConfiguration configuration)
@@ -121,6 +136,12 @@ void ConfigureMassTransit(IServiceCollection services, IConfiguration configurat
 void ConfigureMediatR(IServiceCollection services)
 {
     services.AddMediatR(typeof(CreateAdresVoorstelRequestHandler).GetTypeInfo().Assembly);
+}
+
+void ConfigureApplicationContext(IServiceCollection services)
+{
+    // temporary. this is not used now
+    services.AddTransient<IApplicationContext, ApplicationContext>();
 }
 
 void InitializeDatabase()
