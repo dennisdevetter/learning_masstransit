@@ -7,6 +7,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
 		<PackageReference Include="MassTransit" Version="[8.0.0,9.0)" />
 		<PackageReference Include="MassTransit.EntityFrameworkCore" Version="[8.0.0,9.0)" />
@@ -14,6 +15,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\LearningMassTransit.Application\LearningMassTransit.Application.csproj" />
 		<ProjectReference Include="..\LearningMassTransit.DataAccess\LearningMassTransit.DataAccess.csproj" />
 		<ProjectReference Include="..\LearningMassTransit.Infrastructure\LearningMassTransit.Infrastructure.csproj" />
 	</ItemGroup>

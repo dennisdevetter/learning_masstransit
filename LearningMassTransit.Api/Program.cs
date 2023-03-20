@@ -1,10 +1,15 @@
 
+using System.Reflection;
 using LearningMassTransit.Consumers;
 using LearningMassTransit.DataAccess;
-using LearningMassTransit.DataAccess.Models;
 using MassTransit;
+using MassTransit.Mediator;
 using Microsoft.EntityFrameworkCore;
 using NSwag;
+using MediatR;
+using IMediator = MediatR.IMediator;
+using LearningMassTransit.Api.Controllers;
+using LearningMassTransit.Application.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigureServices(builder.Services, builder.Configuration);
@@ -68,6 +73,8 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
     ConfigureDatabase(services, configuration);
 
     ConfigureMassTransit(services, configuration);
+
+    ConfigureMediatR(services);
 }
 
 void ConfigureDatabase(IServiceCollection services, IConfiguration configuration)
@@ -109,4 +116,9 @@ void ConfigureMassTransit(IServiceCollection services, IConfiguration configurat
             });
         }
     });
+}
+
+void ConfigureMediatR(IServiceCollection services)
+{
+    services.AddMediatR(typeof(CreateAdresVoorstelRequestHandler).GetTypeInfo().Assembly);
 }
