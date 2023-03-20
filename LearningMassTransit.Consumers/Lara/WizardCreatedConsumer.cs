@@ -22,7 +22,11 @@ public class WizardCreatedConsumer : IConsumer<WizardCreated>
 
         if (wizard != null)
         {
+            var steps = wizard.Steps;
+            foreach (var step in steps)
+            {
 
+            }
         }
     }
 }

@@ -9,7 +9,7 @@ public class Wizard : Entity<Guid>
     public Guid WizardId { get; set; }
     public string Kind { get; set; }
     public string UserId { get; set; }
-    public IList<WizardStep> Steps { get; set; }
+    public virtual IList<WizardStep> Steps { get; set; }
     public DateTime CreationDate { get; set; }
     public WizardStatusEnum Status { get; set; }
 }

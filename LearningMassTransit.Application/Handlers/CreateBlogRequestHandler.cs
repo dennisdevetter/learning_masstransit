@@ -22,6 +22,12 @@ public class CreateBlogRequestHandler : IRequestHandler<CreateBlogRequest, strin
         {
             var blog = new Blog { Url = "http://blogs.msdn.com/adonet" };
 
+            blog.Posts.Add(new Post
+            {
+                Content = "content",
+                Title = "title"
+            });
+
             await _laraUnitOfWork.Blogs.Add(blog, cancellationToken);
 
             await _laraUnitOfWork.SaveChangesAsync(cancellationToken);

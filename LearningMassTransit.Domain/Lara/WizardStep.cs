@@ -10,7 +10,7 @@ public class WizardStep : Entity<Guid>
     public string StepData { get; set; }
     public string StepType { get; set; }
     public Guid WizardId { get; set; }
-    public Wizard Wizard { get; set; }
+    public virtual Wizard Wizard { get; set; }
     public string TicketId { get; set; }
     public string TicketData { get; set; }
     public DateTime CreationDate { get; set; }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using LearningMassTransit.Contracts.Dtos;
 using LearningMassTransit.Contracts.Requests;
 using LearningMassTransit.DataAccess;
+using LearningMassTransit.Domain.Blogging;
 using MediatR;
 
 namespace LearningMassTransit.Application.Handlers;
@@ -22,12 +23,37 @@ public class GetBlogsRequestHandler : IRequestHandler<GetBlogsRequest, IList<Blo
     {
         var blogs = _db.Blogs.ToList();
 
-        var res=  blogs.Select(x => new BlogDto
-        {
-            BlogId = x.BlogId,
-            Url = x.Url
-        }).ToList();
+        var dtos = blogs.Select(MapToBlogDto).ToList();
 
-        return res;
+        return dtos;
+    }
+
+    private static BlogDto MapToBlogDto(Blog blog)
+    {
+        var blogDto = new BlogDto
+        {
+            BlogId = blog.BlogId,
+            Url = blog.Url
+        };
+
+        var postDtos = blog.Posts?.Select(MapToPostDto).ToList();
+
+        if (postDtos != null)
+        {
+            blogDto.Posts.AddRange(postDtos);
+        }
+
+        return blogDto;
+    }
+
+    private static PostDto MapToPostDto(Post post)
+    {
+        return new PostDto
+        {
+            BlogId = post.BlogId,
+            Content = post.Content,
+            Title = post.Title,
+            PostId = post.PostId
+        };
     }
 }

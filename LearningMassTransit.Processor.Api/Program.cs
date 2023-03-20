@@ -1,4 +1,5 @@
 using Correlate.DependencyInjection;
+using LearningMassTransit.Application.BackgroundServices;
 using LearningMassTransit.Consumers;
 using LearningMassTransit.DataAccess;
 using LearningMassTransit.Infrastructure.Options;
@@ -131,7 +132,8 @@ void ConfigureMassTransit(IServiceCollection services, IConfiguration configurat
     });
 
     // processors
-    // services.AddHostedService<HelloMessagePublisher>();
+    //services.AddHostedService<HelloMessagePublisher>();
+    services.AddHostedService<WizardCreatedTestPublisher>();
 }
 
 

@@ -17,6 +17,7 @@ public static class ServiceCollectionExtensions
 
         services.AddDbContext<LaraDbContext>((provider, options) =>
         {
+            options.UseLazyLoadingProxies();
             options.UseNpgsql(databaseOptions.Connection);
             options.AddInterceptors(provider.GetServices<IInterceptor>());
         });
