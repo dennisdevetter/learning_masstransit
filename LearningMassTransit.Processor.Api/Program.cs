@@ -1,8 +1,13 @@
-using LearningMassTransit.Application.BackgroundServices;
+using Correlate.DependencyInjection;
 using LearningMassTransit.Consumers;
 using LearningMassTransit.DataAccess;
+using LearningMassTransit.Infrastructure.Options;
+using LearningMassTransit.Infrastructure.Security;
 using MassTransit;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using NSwag;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -58,16 +63,34 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
         };
     });
 
+    ConfigureCorrelation(services);
+
     ConfigureDatabase(services, configuration);
 
     ConfigureMassTransit(services, configuration);
+
+    ConfigureApplicationContext(services);
+}
+
+
+void ConfigureCorrelation(IServiceCollection services)
+{
+    services.AddCorrelate(options => options.RequestHeaders = new[] { "X-Correlation-ID" });
+
+    services.AddHeaderPropagation(options =>
+    {
+        options.Headers.Add("x-correlation-id");
+    });
 }
 
 void ConfigureDatabase(IServiceCollection services, IConfiguration configuration)
 {
-    var connectionstring = configuration.GetValue<string>("PostgressDatabase:Connectionstring");
+    var connection = configuration.GetValue<string>("PostgressDatabase:Connectionstring");
 
-    services.AddDbContext<LaraDbContext>(options => options.UseNpgsql(connectionstring));
+    services.AddDataAccess(new DatabaseOptions
+    {
+        Connection = connection
+    });
 }
 
 void ConfigureMassTransit(IServiceCollection services, IConfiguration configuration)
@@ -76,7 +99,7 @@ void ConfigureMassTransit(IServiceCollection services, IConfiguration configurat
     {
         x.SetKebabCaseEndpointNameFormatter();
 
-        x.AddConsumers(typeof(GettingStartedConsumer).Assembly);
+        x.AddConsumers(typeof(HelloMessageConsumer).Assembly);
 
         //x.AddSagaStateMachines(entryAssembly);
         //x.AddSagas(entryAssembly);
@@ -108,5 +131,12 @@ void ConfigureMassTransit(IServiceCollection services, IConfiguration configurat
     });
 
     // processors
-    services.AddHostedService<HelloMessagePublisher>();
+    // services.AddHostedService<HelloMessagePublisher>();
+}
+
+
+void ConfigureApplicationContext(IServiceCollection services)
+{
+    // temporary. this is not used now
+    services.AddTransient<IApplicationContext, ApplicationContext>();
 }

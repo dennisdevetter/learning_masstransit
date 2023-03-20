@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LearningMassTransit.Infrastructure\LearningMassTransit.Infrastructure.csproj" />
+    <Folder Include="Lara\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Lara\" />
+    <ProjectReference Include="..\LearningMassTransit.Infrastructure\LearningMassTransit.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

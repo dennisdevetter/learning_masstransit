@@ -12,7 +12,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\LearningMassTransit.Contracts\LearningMassTransit.Contracts.csproj" />
+		<ProjectReference Include="..\LearningMassTransit.Contracts\LearningMassTransit.Contracts.csproj" />
+		<ProjectReference Include="..\LearningMassTransit.Domain\LearningMassTransit.Domain.csproj" />
+		<ProjectReference Include="..\LearningMassTransit.Infrastructure\LearningMassTransit.Infrastructure.csproj" />
+		<ProjectReference Include="..\LearningMassTransit.Messaging\LearningMassTransit.Messaging.csproj" />
+		
 	</ItemGroup>
 
 </Project>

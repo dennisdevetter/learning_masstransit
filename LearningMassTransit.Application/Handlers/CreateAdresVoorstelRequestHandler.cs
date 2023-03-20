@@ -7,6 +7,9 @@ using LearningMassTransit.Contracts.Requests;
 using LearningMassTransit.Contracts.Responses;
 using LearningMassTransit.Domain;
 using LearningMassTransit.Domain.Lara;
+using LearningMassTransit.Messaging;
+using LearningMassTransit.Messaging.Lara;
+using MassTransit;
 using MediatR;
 using Newtonsoft.Json;
 
@@ -15,10 +18,12 @@ namespace LearningMassTransit.Application.Handlers;
 public class CreateAdresVoorstelRequestHandler : IRequestHandler<CreateAdresVoorstelRequest, CreateAdresVoorstelResponse>
 {
     private readonly ILaraUnitOfWork _laraUnitOfWork;
+    private readonly IBus _bus;
 
-    public CreateAdresVoorstelRequestHandler(ILaraUnitOfWork laraUnitOfWork)
+    public CreateAdresVoorstelRequestHandler(ILaraUnitOfWork laraUnitOfWork, IBus bus)
     {
         _laraUnitOfWork = laraUnitOfWork;
+        _bus = bus;
     }
 
     public async Task<CreateAdresVoorstelResponse> Handle(CreateAdresVoorstelRequest request, CancellationToken cancellationToken)
@@ -34,6 +39,8 @@ public class CreateAdresVoorstelRequestHandler : IRequestHandler<CreateAdresVoor
             await _laraUnitOfWork.Wizards.Add(wizard, cancellationToken);
 
             await _laraUnitOfWork.SaveChangesAsync(cancellationToken);
+
+            await _bus.Publish(new WizardCreated { WizardId = wizard.WizardId }, cancellationToken);
 
             await transaction.Commit(cancellationToken);
         }

@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+	  <RootNamespace>LearningMassTransit.Messaging</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Lara\" />
+  </ItemGroup>
+
+</Project>

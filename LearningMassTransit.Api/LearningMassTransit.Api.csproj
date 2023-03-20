@@ -20,6 +20,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\LearningMassTransit.Application\LearningMassTransit.Application.csproj" />
+		<ProjectReference Include="..\LearningMassTransit.Consumers\LearningMassTransit.Consumers.csproj" />
 		<ProjectReference Include="..\LearningMassTransit.DataAccess\LearningMassTransit.DataAccess.csproj" />
 		<ProjectReference Include="..\LearningMassTransit.Infrastructure\LearningMassTransit.Infrastructure.csproj" />
 	</ItemGroup>

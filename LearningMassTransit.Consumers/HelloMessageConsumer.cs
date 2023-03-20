@@ -1,15 +1,15 @@
 using System.Threading.Tasks;
-using LearningMassTransit.Contracts;
+using LearningMassTransit.Messaging;
 using MassTransit;
 using Microsoft.Extensions.Logging;
 
 namespace LearningMassTransit.Consumers;
 
-public class GettingStartedConsumer : IConsumer<HelloMessage>
+public class HelloMessageConsumer : IConsumer<HelloMessage>
 {
-    readonly ILogger<GettingStartedConsumer> _logger;
+    readonly ILogger<HelloMessageConsumer> _logger;
 
-    public GettingStartedConsumer(ILogger<GettingStartedConsumer> logger)
+    public HelloMessageConsumer(ILogger<HelloMessageConsumer> logger)
     {
         _logger = logger;
     }

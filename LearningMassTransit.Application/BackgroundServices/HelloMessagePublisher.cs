@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using LearningMassTransit.Contracts;
+using LearningMassTransit.Messaging;
 using MassTransit;
 using Microsoft.Extensions.Hosting;
 

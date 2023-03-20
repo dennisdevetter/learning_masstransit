@@ -21,6 +21,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\LearningMassTransit.Contracts\LearningMassTransit.Contracts.csproj" />
 		<ProjectReference Include="..\LearningMassTransit.DataAccess\LearningMassTransit.DataAccess.csproj" />
+		<ProjectReference Include="..\LearningMassTransit.Messaging\LearningMassTransit.Messaging.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

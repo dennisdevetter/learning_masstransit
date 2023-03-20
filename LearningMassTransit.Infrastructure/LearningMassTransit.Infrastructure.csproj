@@ -14,7 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LearningMassTransit.Consumers\LearningMassTransit.Consumers.csproj" />
     <ProjectReference Include="..\LearningMassTransit.RabbitMQ\LearningMassTransit.RabbitMQ.csproj" />
   </ItemGroup>
 

@@ -1,6 +1,5 @@
 
 using System.Reflection;
-using LearningMassTransit.Consumers;
 using LearningMassTransit.DataAccess;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +7,7 @@ using NSwag;
 using MediatR;
 using Correlate.DependencyInjection;
 using LearningMassTransit.Application.Handlers;
+using LearningMassTransit.Consumers;
 using LearningMassTransit.Infrastructure.Options;
 using LearningMassTransit.Infrastructure.Security;
 using Microsoft.AspNetCore.Builder;
@@ -109,7 +109,7 @@ void ConfigureMassTransit(IServiceCollection services, IConfiguration configurat
     {
         x.SetKebabCaseEndpointNameFormatter();
 
-        x.AddConsumers(typeof(GettingStartedConsumer).Assembly);
+        x.AddConsumers(typeof(HelloMessageConsumer).Assembly);
 
         var useRabbitMq = configuration.GetValue<bool>("Masstransit:UseRabbitMq");
 
