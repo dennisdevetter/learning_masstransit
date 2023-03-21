@@ -109,8 +109,6 @@ void ConfigureMassTransit(IServiceCollection services, IConfiguration configurat
     {
         x.SetKebabCaseEndpointNameFormatter();
 
-        x.AddConsumers(typeof(HelloMessageConsumer).Assembly);
-
         var useRabbitMq = configuration.GetValue<bool>("Masstransit:UseRabbitMq");
 
         if (useRabbitMq)
