@@ -19,11 +19,22 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearningMassTransit.Applica
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearningMassTransit.DataAccess", "LearningMassTransit.DataAccess\LearningMassTransit.DataAccess.csproj", "{7A473EFC-FD44-4FD1-AACA-00CAA1F6E001}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearningMassTransit.Infrastructure.EntityFramework", "LearningMassTransit.Infrastructure.EntityFramework\LearningMassTransit.Infrastructure.EntityFramework.csproj", "{5B7DB51C-5D3E-4EE2-A849-15270FEA2697}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearningMassTransit.Infrastructure.EntityFramework", "LearningMassTransit.Infrastructure.EntityFramework\LearningMassTransit.Infrastructure.EntityFramework.csproj", "{5B7DB51C-5D3E-4EE2-A849-15270FEA2697}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearningMassTransit.Domain", "LearningMassTransit.Domain\LearningMassTransit.Domain.csproj", "{C8EDFB10-CC27-41FA-8527-08DF25E59EDA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearningMassTransit.Domain", "LearningMassTransit.Domain\LearningMassTransit.Domain.csproj", "{C8EDFB10-CC27-41FA-8527-08DF25E59EDA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearningMassTransit.Messaging", "LearningMassTransit.Messaging\LearningMassTransit.Messaging.csproj", "{0B603A1C-568A-4AB7-BA61-DCE90E008902}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearningMassTransit.Messaging", "LearningMassTransit.Messaging\LearningMassTransit.Messaging.csproj", "{0B603A1C-568A-4AB7-BA61-DCE90E008902}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{D1FA9097-B263-46F2-BB7C-8417A6E7CC18}"
+	ProjectSection(SolutionItems) = preProject
+		build\docker-compose.yml = build\docker-compose.yml
+		build\readme.md = build\readme.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{31C88DE3-7702-4D68-8F87-6FC0A685172D}"
+	ProjectSection(SolutionItems) = preProject
+		build\scripts\init.sql = build\scripts\init.sql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -78,6 +89,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{31C88DE3-7702-4D68-8F87-6FC0A685172D} = {D1FA9097-B263-46F2-BB7C-8417A6E7CC18}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {31C16C50-5202-41B2-BF7E-EAA417BCF25C}

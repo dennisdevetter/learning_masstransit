@@ -8,5 +8,5 @@ public class Blog : Entity<int>
     public int BlogId { get; set; }
     public string Url { get; set; }
 
-    public virtual ICollection<Post> Posts { get; protected set; }
+    public virtual ICollection<Post> Posts { get; protected set; } = new List<Post>();
 }

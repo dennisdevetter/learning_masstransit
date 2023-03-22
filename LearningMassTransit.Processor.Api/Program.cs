@@ -136,7 +136,6 @@ void ConfigureMassTransit(IServiceCollection services, IConfiguration configurat
 
     // processors
     //services.AddHostedService<HelloMessagePublisher>();
-    services.AddHostedService<WizardCreatedTestPublisher>();
 
     services.AddQuartz(q =>
     {
