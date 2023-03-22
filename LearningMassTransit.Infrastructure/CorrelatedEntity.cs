@@ -1,4 +1,5 @@
-﻿using LearningMassTransit.Infrastructure.Database;
+﻿using System;
+using LearningMassTransit.Infrastructure.Database;
 
 namespace LearningMassTransit.Infrastructure;
 

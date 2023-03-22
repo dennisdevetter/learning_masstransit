@@ -1,4 +1,6 @@
-﻿public interface IAuditEntity
+﻿using System;
+
+public interface IAuditEntity
 {
     string? UserId { get; }
     DateTime? AuditDate { get; }

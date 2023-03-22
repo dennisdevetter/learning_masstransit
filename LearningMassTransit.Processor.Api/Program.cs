@@ -2,6 +2,8 @@ using Correlate.DependencyInjection;
 using LearningMassTransit.Application.BackgroundServices;
 using LearningMassTransit.Consumers;
 using LearningMassTransit.DataAccess;
+using LearningMassTransit.Infrastructure;
+using LearningMassTransit.Infrastructure.Messaging;
 using LearningMassTransit.Infrastructure.Options;
 using LearningMassTransit.Infrastructure.Security;
 using LearningMassTransit.Processor.Api.Jobs;
@@ -57,7 +59,11 @@ void ConfigureApp()
 void ConfigureServices(IServiceCollection services, IConfiguration configuration)
 {
     services.AddEndpointsApiExplorer();
-    services.AddControllers();
+
+    services.AddMicroserviceControllers(); // custom
+
+    services.AddApplicationBus(); // custom
+
     services.AddOpenApiDocument(cfg => cfg.PostProcess = d =>
     {
         d.Info.Title = "Api";
@@ -102,6 +108,8 @@ void ConfigureMassTransit(IServiceCollection services, IConfiguration configurat
     services.AddMassTransit(x =>
     {
         x.SetKebabCaseEndpointNameFormatter();
+
+        x.AddTransactionalBus();
 
         x.AddConsumers(typeof(HelloMessageConsumer).Assembly);
 

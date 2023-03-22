@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using LearningMassTransit.Infrastructure;
+using LearningMassTransit.Infrastructure.Messaging;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigureServices(builder.Services, builder.Configuration);
@@ -57,7 +59,9 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
 {
     services.AddEndpointsApiExplorer();
 
-    services.AddControllers();
+    services.AddMicroserviceControllers(); // custom
+
+    services.AddApplicationBus(); // custom
 
     services.AddOpenApiDocument(cfg => cfg.PostProcess = d =>
     {
@@ -104,6 +108,8 @@ void ConfigureMassTransit(IServiceCollection services, IConfiguration configurat
     services.AddMassTransit(x =>
     {
         x.SetKebabCaseEndpointNameFormatter();
+
+        x.AddTransactionalBus();
 
         var useRabbitMq = configuration.GetValue<bool>("Masstransit:UseRabbitMq");
 

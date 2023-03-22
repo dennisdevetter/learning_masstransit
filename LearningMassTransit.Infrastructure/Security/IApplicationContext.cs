@@ -1,4 +1,6 @@
-﻿namespace LearningMassTransit.Infrastructure.Security;
+﻿using System.Collections.Generic;
+
+namespace LearningMassTransit.Infrastructure.Security;
 
 public interface IApplicationContext
 {
