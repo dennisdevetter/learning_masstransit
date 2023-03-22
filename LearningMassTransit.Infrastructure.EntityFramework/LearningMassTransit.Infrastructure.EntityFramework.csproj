@@ -8,12 +8,13 @@
 
 	<ItemGroup>
 		<PackageReference Include="Correlate.Abstractions" Version="3.3.0" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.0.1" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.0.12" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.12" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.1" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.1" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.12" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.12" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.8" />
 	</ItemGroup>
 
 

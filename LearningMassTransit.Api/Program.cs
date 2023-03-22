@@ -2,12 +2,10 @@
 using System.Reflection;
 using LearningMassTransit.DataAccess;
 using MassTransit;
-using Microsoft.EntityFrameworkCore;
 using NSwag;
 using MediatR;
 using Correlate.DependencyInjection;
 using LearningMassTransit.Application.Handlers;
-using LearningMassTransit.Consumers;
 using LearningMassTransit.Infrastructure.Options;
 using LearningMassTransit.Infrastructure.Security;
 using Microsoft.AspNetCore.Builder;
@@ -53,8 +51,6 @@ void ConfigureApp()
     {
 
     });
-
-    InitializeDatabase();
 }
 
 void ConfigureServices(IServiceCollection services, IConfiguration configuration)
@@ -144,13 +140,4 @@ void ConfigureApplicationContext(IServiceCollection services)
 {
     // temporary. this is not used now
     services.AddTransient<IApplicationContext, ApplicationContext>();
-}
-
-void InitializeDatabase()
-{
-    using (var scope = app.Services.CreateScope())
-    {
-        var context = scope.ServiceProvider.GetRequiredService<LaraDbContext>();
-        context.Database.Migrate();
-    }
 }

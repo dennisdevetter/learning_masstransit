@@ -31,11 +31,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{D1FA9097
 		build\readme.md = build\readme.md
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{31C88DE3-7702-4D68-8F87-6FC0A685172D}"
-	ProjectSection(SolutionItems) = preProject
-		build\scripts\init.sql = build\scripts\init.sql
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -89,9 +84,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{31C88DE3-7702-4D68-8F87-6FC0A685172D} = {D1FA9097-B263-46F2-BB7C-8417A6E7CC18}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {31C16C50-5202-41B2-BF7E-EAA417BCF25C}

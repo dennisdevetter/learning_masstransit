@@ -10,6 +10,7 @@
           - RABBITMQ_DEFAULT_PASS=guest
     postgres:
         image: postgres
+        container_name: postgres-instance
         restart: always
         environment:
           - POSTGRES_DB=postgres
@@ -22,5 +23,4 @@
         ports:
           - '5432:5432'
         volumes: 
-          - ../db/postgres-data:/var/lib/postgresql/data          
-          - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+          - ../db/postgres-data:/var/lib/postgresql/data
