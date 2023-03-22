@@ -34,16 +34,11 @@ public class CreateAdresVoorstelRequestHandler : IRequestHandler<CreateAdresVoor
 
         var wizard = CreateWizard(request, ticketId);
 
-        using (var transaction = _laraUnitOfWork.BeginTransaction())
-        {
-            await _laraUnitOfWork.Wizards.Add(wizard, cancellationToken);
+        await _laraUnitOfWork.Wizards.Add(wizard, cancellationToken);
 
-            await _laraUnitOfWork.SaveChangesAsync(cancellationToken);
+        await _laraUnitOfWork.SaveChangesAsync(cancellationToken);
 
-            await _bus.Publish(new WizardCreated { WizardId = wizard.WizardId }, cancellationToken);
-
-            await transaction.Commit(cancellationToken);
-        }
+        await _bus.Publish(new WizardCreated { WizardId = wizard.WizardId }, cancellationToken);
 
         var res = new CreateAdresVoorstelResponse(new AdresVoorstelCreatingDto(ticketId));
 
