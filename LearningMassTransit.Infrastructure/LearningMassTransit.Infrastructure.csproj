@@ -23,6 +23,7 @@
 
 	<ItemGroup>
 		<Folder Include="Api\Exceptions\" />
+		<Folder Include="Api\Routing\" />
 		<Folder Include="Extensions\" />
 		<Folder Include="Messaging\" />
 		<Folder Include="Options\" />

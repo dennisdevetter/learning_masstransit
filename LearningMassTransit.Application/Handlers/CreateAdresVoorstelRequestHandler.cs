@@ -21,7 +21,9 @@ public class CreateAdresVoorstelRequestHandler : IRequestHandler<CreateAdresVoor
     {
         // TODO add backend validation ?
 
-        var voorstellenAdresRequestEvent = new VoorstellenAdresRequestEvent(request.Adres);
+        var userId = "7D35AFD6933D4049BD17A4560BA30674";
+
+        var voorstellenAdresRequestEvent = new VoorstellenAdresRequestEvent(request.Adres, userId);
 
         await _applicationBus.Publish(voorstellenAdresRequestEvent, cancellationToken);
 

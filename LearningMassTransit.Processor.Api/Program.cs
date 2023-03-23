@@ -15,6 +15,16 @@ using Microsoft.Extensions.Hosting;
 using NSwag;
 using Quartz;
 using System;
+using System.Reflection;
+using LearningMassTransit.Application.Sagas;
+using LearningMassTransit.Contracts.Requests;
+using LearningMassTransit.Domain.Lara;
+using Microsoft.EntityFrameworkCore;
+using EndpointConvention = LearningMassTransit.Infrastructure.Messaging.EndpointConvention;
+using LearningMassTransit.Application.Handlers;
+using LearningMassTransit.Application.Sagas.Handlers;
+using LearningMassTransit.Infrastructure.Api.Routing;
+using MediatR;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigureServices(builder.Services, builder.Configuration);
@@ -52,7 +62,8 @@ void ConfigureApp()
 
     app.UseEndpoints(endpoints =>
     {
-
+        endpoints.MapAlwaysOnEndpoint();
+        endpoints.MapControllers();
     });
 }
 
@@ -80,6 +91,8 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
     ConfigureMassTransit(services, configuration);
 
     ConfigureApplicationContext(services);
+
+    ConfigureMediatR(services);
 }
 
 
@@ -113,7 +126,14 @@ void ConfigureMassTransit(IServiceCollection services, IConfiguration configurat
 
         x.AddConsumers(typeof(HelloMessageConsumer).Assembly);
 
-        //x.AddSagaStateMachines(entryAssembly);
+        x.AddSagaStateMachine<VoorstellenAdresStateMachine, VoorstellenAdresState>()
+            .EntityFrameworkRepository(r =>
+            {
+                r.ConcurrencyMode = ConcurrencyMode.Optimistic;
+                r.ExistingDbContext<LaraDbContext>();
+            });
+
+
         //x.AddSagas(entryAssembly);
         //x.AddActivities(entryAssembly);
 
@@ -168,6 +188,8 @@ void ConfigureMassTransit(IServiceCollection services, IConfiguration configurat
         // when shutting down we want jobs to complete gracefully
         options.WaitForJobsToComplete = true;
     });
+
+    EndpointConvention.RegisterServiceBusEndpoints(new Uri("queue:sagas"), typeof(CreateAdresVoorstelRequest).Assembly);
 }
 
 
@@ -175,4 +197,9 @@ void ConfigureApplicationContext(IServiceCollection services)
 {
     // temporary. this is not used now
     services.AddTransient<IApplicationContext, ApplicationContext>();
+}
+
+void ConfigureMediatR(IServiceCollection services)
+{
+    services.AddMediatR(typeof(CreateAdresVoorstelCommandHandler).GetTypeInfo().Assembly);
 }

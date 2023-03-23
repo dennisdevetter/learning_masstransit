@@ -27,4 +27,9 @@
 	  <ProjectReference Include="..\LearningMassTransit.DataAccess\LearningMassTransit.DataAccess.csproj" />
 	</ItemGroup>
 
+
+	<ItemGroup>
+	  <Folder Include="Consumers\" />
+	</ItemGroup>
+
 </Project>

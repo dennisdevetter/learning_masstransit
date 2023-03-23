@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using LearningMassTransit.Infrastructure;
 using LearningMassTransit.Infrastructure.Messaging;
+using LearningMassTransit.Infrastructure.Api.Routing;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigureServices(builder.Services, builder.Configuration);
@@ -51,7 +52,8 @@ void ConfigureApp()
 
     app.UseEndpoints(endpoints =>
     {
-
+        endpoints.MapAlwaysOnEndpoint();
+        endpoints.MapControllers();
     });
 }
 
