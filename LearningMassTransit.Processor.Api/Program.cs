@@ -1,5 +1,4 @@
 using Correlate.DependencyInjection;
-using LearningMassTransit.Application.BackgroundServices;
 using LearningMassTransit.Consumers;
 using LearningMassTransit.DataAccess;
 using LearningMassTransit.Infrastructure;
@@ -19,12 +18,12 @@ using System.Reflection;
 using LearningMassTransit.Application.Sagas;
 using LearningMassTransit.Contracts.Requests;
 using LearningMassTransit.Domain.Lara;
-using Microsoft.EntityFrameworkCore;
 using EndpointConvention = LearningMassTransit.Infrastructure.Messaging.EndpointConvention;
-using LearningMassTransit.Application.Handlers;
 using LearningMassTransit.Application.Sagas.Handlers;
 using LearningMassTransit.Infrastructure.Api.Routing;
+using LearningMassTransit.Processor.Api.Consumers;
 using MediatR;
+using LearningMassTransit.Infrastructure.Messaging.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigureServices(builder.Services, builder.Configuration);
@@ -125,6 +124,7 @@ void ConfigureMassTransit(IServiceCollection services, IConfiguration configurat
         x.AddTransactionalBus();
 
         x.AddConsumers(typeof(HelloMessageConsumer).Assembly);
+        x.AddConsumers(typeof(Program).Assembly);
 
         x.AddSagaStateMachine<VoorstellenAdresStateMachine, VoorstellenAdresState>()
             .EntityFrameworkRepository(r =>
@@ -150,6 +150,24 @@ void ConfigureMassTransit(IServiceCollection services, IConfiguration configurat
 
                 });
                 cfg.ConfigureEndpoints(context);
+
+                cfg.ReceiveEndpoint("queue", e =>
+                {
+                    const int concurrencyLimit = 20; // this can go up, depending upon the database capacity
+
+                    // number of consumers on the endpoint
+                    e.PrefetchCount = concurrencyLimit;
+
+                    e.UseConsumeFilter(typeof(ApplicationBusConsumerFilter<>), context);
+                    e.UseConsumeFilter(typeof(UnitOfWorkConsumerFilter<>), context);
+
+                    e.ConfigureDefaultDeadLetterTransport();
+
+                    e.ConfigureError(y =>
+                    {
+                        // TODO
+                    });
+                });
             });
         }
 

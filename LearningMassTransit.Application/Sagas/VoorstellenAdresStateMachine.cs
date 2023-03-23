@@ -49,12 +49,7 @@ public class VoorstellenAdresStateMachine : MassTransitStateMachine<VoorstellenA
                         __correlationId = context.Data.WorkflowId
                     });
                 }));
-        //.SendAsync(async context => await context.Init<CreateAdresVoorstelCommand>(new
-        //{
-        //    Adres = context.Data.Data,
-        //    __correlationId = context.Data.WorkflowId
-        //});
-
+        
         During(AdresVoorstelCreating,
             Ignore(VoorstellenAdresRequest),
             When(AdresVoorstelCreatedEvent)

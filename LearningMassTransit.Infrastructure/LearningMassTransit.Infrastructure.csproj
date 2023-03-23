@@ -25,7 +25,7 @@
 		<Folder Include="Api\Exceptions\" />
 		<Folder Include="Api\Routing\" />
 		<Folder Include="Extensions\" />
-		<Folder Include="Messaging\" />
+		<Folder Include="Messaging\Filters\" />
 		<Folder Include="Options\" />
 		<Folder Include="Security\" />
 	</ItemGroup>
