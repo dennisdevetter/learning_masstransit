@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LearningMassTransit.DataAccess.Migrations
 {
     [DbContext(typeof(LaraDbContext))]
-    [Migration("20230320122016_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20230323162119_Quartz")]
+    partial class Quartz
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -67,63 +67,64 @@ namespace LearningMassTransit.DataAccess.Migrations
                     b.ToTable("Posts", "lara");
                 });
 
-            modelBuilder.Entity("LearningMassTransit.Domain.Lara.Wizard", b =>
+            modelBuilder.Entity("LearningMassTransit.Domain.Lara.Ticket", b =>
                 {
-                    b.Property<Guid>("WizardId")
+                    b.Property<string>("TicketId")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Actie")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("CorrelationId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Kind")
-                        .IsRequired()
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Result")
                         .HasColumnType("text");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.HasKey("TicketId");
 
-                    b.HasKey("WizardId");
-
-                    b.ToTable("Wizards", "lara");
+                    b.ToTable("Ticket", "lara");
                 });
 
-            modelBuilder.Entity("LearningMassTransit.Domain.Lara.WizardStep", b =>
+            modelBuilder.Entity("LearningMassTransit.Domain.Lara.VoorstellenAdresState", b =>
                 {
-                    b.Property<Guid>("WizardStepId")
+                    b.Property<Guid>("WorkflowId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CorrelationId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("StepData")
+                    b.Property<string>("CurrentState")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("StepNr")
-                        .HasColumnType("integer");
+                    b.Property<string>("Data")
+                        .HasColumnType("text");
 
-                    b.Property<string>("StepType")
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("bytea");
+
+                    b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("TicketData")
-                        .HasColumnType("text");
+                    b.HasKey("WorkflowId");
 
-                    b.Property<string>("TicketId")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("WizardId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("WizardStepId");
-
-                    b.HasIndex("WizardId");
-
-                    b.ToTable("WizardSteps", "lara");
+                    b.ToTable("VoorstellenAdresState", "lara");
                 });
 
             modelBuilder.Entity("LearningMassTransit.Domain.Blogging.Post", b =>
@@ -137,25 +138,9 @@ namespace LearningMassTransit.DataAccess.Migrations
                     b.Navigation("Blog");
                 });
 
-            modelBuilder.Entity("LearningMassTransit.Domain.Lara.WizardStep", b =>
-                {
-                    b.HasOne("LearningMassTransit.Domain.Lara.Wizard", "Wizard")
-                        .WithMany("Steps")
-                        .HasForeignKey("WizardId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Wizard");
-                });
-
             modelBuilder.Entity("LearningMassTransit.Domain.Blogging.Blog", b =>
                 {
                     b.Navigation("Posts");
-                });
-
-            modelBuilder.Entity("LearningMassTransit.Domain.Lara.Wizard", b =>
-                {
-                    b.Navigation("Steps");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,10 +1,9 @@
-﻿using LearningMassTransit.Contracts.Dtos;
-
+﻿
 namespace LearningMassTransit.Contracts.Responses;
 
-public class CreateAdresVoorstelResponse : ResponseOf<AdresVoorstelCreatingDto>
+public class CreateAdresVoorstelResponse : ResponseOf<bool>
 {
-    public CreateAdresVoorstelResponse(AdresVoorstelCreatingDto result) : base(result)
+    public CreateAdresVoorstelResponse() : base(true)
     {
     }
 }

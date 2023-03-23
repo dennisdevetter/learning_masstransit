@@ -16,15 +16,15 @@ public class LaraUnitOfWork : UnitOfWork, ILaraUnitOfWork
         ICorrelationContextAccessor correlationContextAccessor,
         IRepository<Blog, int> blogs,
         IRepository<Post, int> posts,
-        IRepository<Wizard, Guid> wizards,
+        IRepository<Ticket, string> tickets,
         IApplicationContext applicationContext) : base(context, correlationContextAccessor, applicationContext)
     {
         Blogs = blogs;
         Posts = posts;
-        Wizards = wizards;
+        Tickets = tickets;
     }
 
     public IRepository<Blog, int> Blogs { get; }
     public IRepository<Post, int> Posts { get; }
-    public IRepository<Wizard, Guid> Wizards { get; }
+    public IRepository<Ticket, string> Tickets { get; }
 }

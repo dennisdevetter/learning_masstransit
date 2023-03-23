@@ -8,12 +8,12 @@ using Quartz;
 
 namespace LearningMassTransit.Processor.Api.Jobs;
 
-public class WizzardPollingJob : IJob
+public class TicketPollingJob : IJob
 {
     private readonly IBus _bus;
     private readonly ILaraUnitOfWork _laraUnitOfWork;
 
-    public WizzardPollingJob(ILaraUnitOfWork laraUnitOfWork, IBus bus)
+    public TicketPollingJob(ILaraUnitOfWork laraUnitOfWork, IBus bus)
     {
         _bus = bus;
         _laraUnitOfWork = laraUnitOfWork;
@@ -21,18 +21,22 @@ public class WizzardPollingJob : IJob
 
     public async Task Execute(IJobExecutionContext context)
     {
-        var wizards = await _laraUnitOfWork.Wizards.All(context.CancellationToken);
+        var tickets = await _laraUnitOfWork.Tickets.All(context.CancellationToken);
 
         // polling logic to async api
 
-        var completedWizards = wizards.Where(x => x.Status == WizardStatusEnum.Completed).ToList();
+        var completedTickets = tickets.Where(x => x.Status == TicketStatusEnum.Completed).ToList();
 
-        if (completedWizards.Any())
+        if (completedTickets.Any())
         {
-            foreach (var completedWizard in completedWizards)
+            foreach (var ticket in completedTickets)
             {
                 // notify saga
-                await _bus.Publish(new WizardCompleted { WizardId = completedWizard.WizardId }, context.CancellationToken);
+                await _bus.Publish(new TicketCompleted
+                {
+                    TicketId = ticket.TicketId,
+                    CorrelationId = ticket.CorrelationId
+                }, context.CancellationToken);
             }
         }
     }

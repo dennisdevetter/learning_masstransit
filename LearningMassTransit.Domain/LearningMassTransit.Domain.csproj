@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Lara\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\LearningMassTransit.Infrastructure\LearningMassTransit.Infrastructure.csproj" />
   </ItemGroup>
 

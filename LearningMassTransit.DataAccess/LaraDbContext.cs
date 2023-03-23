@@ -19,7 +19,8 @@ public class LaraDbContext : DbContext
 
     public DbSet<Blog> Blogs { get; set; }
     public DbSet<Post> Posts { get; set; }
-    public DbSet<Wizard> Wizards { get; set; }
+    public DbSet<Ticket> Tickets { get; set; }
+    public DbSet<VoorstellenAdresState> VoorstellenAdresStates { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

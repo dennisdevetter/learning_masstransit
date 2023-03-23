@@ -5,4 +5,8 @@
 	  <RootNamespace>LearningMassTransit.Messaging</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LearningMassTransit.Contracts\LearningMassTransit.Contracts.csproj" />
+  </ItemGroup>
+
 </Project>

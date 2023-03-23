@@ -152,7 +152,7 @@ void ConfigureMassTransit(IServiceCollection services, IConfiguration configurat
 
         // quickest way to create a job with single trigger is to use ScheduleJob
         // (requires version 3.2)
-        q.ScheduleJob<WizzardPollingJob>(trigger => trigger
+        q.ScheduleJob<TicketPollingJob>(trigger => trigger
             .WithIdentity("Combined Configuration Trigger")
             .StartAt(DateBuilder.EvenSecondDate(DateTimeOffset.UtcNow.AddSeconds(7)))
             .WithDailyTimeIntervalSchedule(x => x.WithInterval(10, IntervalUnit.Second))
@@ -160,7 +160,7 @@ void ConfigureMassTransit(IServiceCollection services, IConfiguration configurat
         );
     });
 
-    services.AddTransient<WizzardPollingJob>();
+    services.AddTransient<TicketPollingJob>();
 
     // Quartz.Extensions.Hosting allows you to fire background service that handles scheduler lifecycle
     services.AddQuartzHostedService(options =>

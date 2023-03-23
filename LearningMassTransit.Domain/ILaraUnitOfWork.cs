@@ -9,5 +9,5 @@ public interface ILaraUnitOfWork : IUnitOfWork
 {
     IRepository<Blog, int> Blogs { get; }
     IRepository<Post, int> Posts { get; }
-    IRepository<Wizard, Guid> Wizards { get; }
+    IRepository<Ticket, string> Tickets { get; }
 }
