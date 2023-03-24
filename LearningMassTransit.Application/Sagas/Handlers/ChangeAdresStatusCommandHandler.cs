@@ -10,21 +10,19 @@ using MediatR;
 
 namespace LearningMassTransit.Application.Sagas.Handlers;
 
-public class CreateAdresVoorstelCommandHandler : IRequestHandler<CreateAdresVoorstelCommand>
+public class ChangeAdresStatusCommandHandler : IRequestHandler<ChangeAdresStatusCommand>
 {
     private readonly IApplicationBus _applicationBus;
     private readonly ILaraUnitOfWork _unitOfWork;
 
-    public CreateAdresVoorstelCommandHandler(IApplicationBus applicationBus, ILaraUnitOfWork unitOfWork)
+    public ChangeAdresStatusCommandHandler(IApplicationBus applicationBus, ILaraUnitOfWork unitOfWork)
     {
         _applicationBus = applicationBus;
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Unit> Handle(CreateAdresVoorstelCommand command, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(ChangeAdresStatusCommand command, CancellationToken cancellationToken)
     {
-        var adres = command.Adres;
-
         // todo
         // do call to basisregisters
         // get ticket id and store in database
@@ -34,7 +32,7 @@ public class CreateAdresVoorstelCommandHandler : IRequestHandler<CreateAdresVoor
         var ticket = new Ticket
         {
             CorrelationId = command.CorrelationId,
-            Actie = ActieEnum.ProposeStreetName,
+            Actie = command.Approved ? ActieEnum.ApproveAddress : ActieEnum.RejectAddress,
             CreationDate = DateTime.UtcNow,
             Status = TicketStatusEnum.Waiting,
             TicketId = ticketId,
@@ -43,7 +41,7 @@ public class CreateAdresVoorstelCommandHandler : IRequestHandler<CreateAdresVoor
         await _unitOfWork.Tickets.Add(ticket, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        await _applicationBus.Publish(new AdresVoorstelCreatedEvent
+        await _applicationBus.Publish(new AdresStatusChangeCreatedEvent
         {
             TicketId = ticketId,
             CorrelationId = command.CorrelationId

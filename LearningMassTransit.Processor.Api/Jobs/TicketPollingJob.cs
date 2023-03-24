@@ -49,6 +49,10 @@ public class TicketPollingJob : IJob
             case ActieEnum.ProposeStreetName:
                 await ProcessProposeStreetName(context, ticket);
                 break;
+            case ActieEnum.ApproveAddress:
+            case ActieEnum.RejectAddress:
+                await ProcessChangeAddressStatus(context, ticket);
+                break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
@@ -76,9 +80,36 @@ public class TicketPollingJob : IJob
         // notify saga
         await _applicationBus.Publish(new ProposeStreetNameTicketCompletedEvent
         {
+            ObjectId = ticketResult.result,
             TicketId = ticket.TicketId,
             CorrelationId = ticket.CorrelationId
         }, context.CancellationToken);
+    }
 
+    private async Task ProcessChangeAddressStatus(IJobExecutionContext context, Ticket ticket)
+    {
+        // TODO get status of ticket from basisregisters
+
+        var ticketResult = new
+        {
+            result = "Changed",
+            status = "Completed"
+        };
+
+        if (ticketResult.status != "Completed")
+        {
+            return;
+        }
+
+        // update ticket
+        ticket.Result = ticketResult.result;
+        ticket.Status = TicketStatusEnum.Completed;
+
+        // notify saga
+        await _applicationBus.Publish(new AdresStatusTicketCompletedEvent
+        {
+            TicketId = ticket.TicketId,
+            CorrelationId = ticket.CorrelationId
+        }, context.CancellationToken);
     }
 }

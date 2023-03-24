@@ -3,9 +3,8 @@ using MediatR;
 
 namespace LearningMassTransit.Messaging.Lara;
 
-public class ProposeStreetNameTicketCompletedEvent : INotification
+public class AdresStatusTicketCompletedEvent : INotification
 {
     public string TicketId { get; set; }
     public Guid CorrelationId { get; set; }
-    public string ObjectId { get; set; }
 }

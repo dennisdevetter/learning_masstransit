@@ -1,5 +1,5 @@
-﻿using System;
-using LearningMassTransit.Contracts.Commands;
+﻿using LearningMassTransit.Contracts.Commands;
+using LearningMassTransit.Contracts.Dtos;
 using LearningMassTransit.Domain.Lara;
 using LearningMassTransit.Messaging.Lara;
 using MassTransit;
@@ -32,22 +32,14 @@ public class VoorstellenAdresStateMachine : MassTransitStateMachine<VoorstellenA
                 WorkflowId = context.Message.WorkflowId,
                 UserId = context.Message.UserId,
                 CorrelationId = context.CorrelationId ?? context.Message.WorkflowId,
-                Data = Newtonsoft.Json.JsonConvert.SerializeObject(context.Message.Data)
+                Data = SerializeData(context.Message.Data)
             });
         });
 
         Event(() => AdresVoorstelCreatedEvent, x => x.CorrelateById(i => i.WorkflowId, c => c.Message.CorrelationId));
-
-        Event(() => ProposeStreetNameTicketCompletedEvent, x => 
-                x
-                .CorrelateById(i => i.WorkflowId, c => GetCorrelationIdForTicketEvent(c.Message))
-                .SelectId(c => GetCorrelationIdForTicketEvent(c.Message))
-        );
-    }
-
-    private Guid GetCorrelationIdForTicketEvent(ProposeStreetNameTicketCompletedEvent evt)
-    {
-        return evt.CorrelationId;
+        Event(() => ProposeStreetNameTicketCompletedEvent, x => x.CorrelateById(i => i.WorkflowId, c => c.Message.CorrelationId));
+        Event(() => AdresStatusChangeCreatedEvent, x => x.CorrelateById(i => i.WorkflowId, c => c.Message.CorrelationId));
+        Event(() => AdresStatusTicketCompletedEvent, x => x.CorrelateById(i => i.WorkflowId, c => c.Message.CorrelationId));
     }
 
     private void DefineBehaviour()
@@ -74,19 +66,53 @@ public class VoorstellenAdresStateMachine : MassTransitStateMachine<VoorstellenA
             Ignore(VoorstellenAdresRequest),
             Ignore(AdresVoorstelCreatedEvent),
             When(ProposeStreetNameTicketCompletedEvent)
-                .TransitionTo(AdresVoorstelCompleted)
-                .Then(context =>
+                .TransitionTo(AdresStatusChanging)
+                .Then(async context =>
                 {
-                    var foo = context.Data;
+                    await context.Send<ChangeAdresStatusCommand>(new
+                    {
+                        context.Data.ObjectId,
+                        context.Data.CorrelationId,
+                        Approved = !string.IsNullOrWhiteSpace(context.Data.ObjectId),
+                        __correlationId = context.Data.CorrelationId
+                    });
                 }));
+
+        During(AdresStatusChanging,
+            Ignore(VoorstellenAdresRequest),
+            Ignore(AdresVoorstelCreatedEvent),
+            Ignore(ProposeStreetNameTicketCompletedEvent),
+            When(AdresStatusChangeCreatedEvent)
+                .TransitionTo(AdresStatusChanged));
+
+        During(AdresStatusChanged,
+            Ignore(VoorstellenAdresRequest),
+            Ignore(AdresVoorstelCreatedEvent),
+            Ignore(ProposeStreetNameTicketCompletedEvent),
+            Ignore(AdresStatusChangeCreatedEvent),
+            When(AdresStatusTicketCompletedEvent)
+                .TransitionTo(Complete));
     }
 
     public State AdresVoorstelCreating { get; private set; }
     public State AdresVoorstelCreated { get; private set; }
-    public State AdresVoorstelCompleted { get; private set; }
-
+    public State AdresStatusChanging { get; private set; }
+    public State AdresStatusChanged { get; private set; }
+    public State Complete { get; private set; }
 
     public Event<VoorstellenAdresRequestEvent> VoorstellenAdresRequest { get; private set; }
     public Event<AdresVoorstelCreatedEvent> AdresVoorstelCreatedEvent { get; private set; }
     public Event<ProposeStreetNameTicketCompletedEvent> ProposeStreetNameTicketCompletedEvent { get; private set; }
+    public Event<AdresStatusChangeCreatedEvent> AdresStatusChangeCreatedEvent { get; private set; }
+    public Event<AdresStatusTicketCompletedEvent> AdresStatusTicketCompletedEvent { get; private set; }
+
+    private static string SerializeData(CreateAdresVoorstelDto data)
+    {
+        return Newtonsoft.Json.JsonConvert.SerializeObject(data);
+    }
+
+    private static CreateAdresVoorstelDto? DeserializeData(string data)
+    {
+        return Newtonsoft.Json.JsonConvert.DeserializeObject<CreateAdresVoorstelDto>(data);
+    }
 }
