@@ -1,5 +1,4 @@
 using Correlate.DependencyInjection;
-using LearningMassTransit.Consumers;
 using LearningMassTransit.DataAccess;
 using LearningMassTransit.Infrastructure;
 using LearningMassTransit.Infrastructure.Messaging;
@@ -18,12 +17,12 @@ using System.Reflection;
 using LearningMassTransit.Application.Sagas;
 using LearningMassTransit.Contracts.Requests;
 using LearningMassTransit.Domain.Lara;
-using EndpointConvention = LearningMassTransit.Infrastructure.Messaging.EndpointConvention;
 using LearningMassTransit.Application.Sagas.Handlers;
 using LearningMassTransit.Infrastructure.Api.Routing;
 using LearningMassTransit.Processor.Api.Consumers;
 using MediatR;
 using LearningMassTransit.Infrastructure.Messaging.Filters;
+using EndpointConvention = LearningMassTransit.Infrastructure.Messaging.EndpointConvention;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigureServices(builder.Services, builder.Configuration);
@@ -121,7 +120,6 @@ void ConfigureMassTransit(IServiceCollection services, IConfiguration configurat
     {
         x.SetKebabCaseEndpointNameFormatter();
 
-        x.AddConsumers(typeof(HelloMessageConsumer).Assembly);
         x.AddConsumers(typeof(CreateAdresVoorstelCommandConsumer).Assembly);
 
         x.AddSagaStateMachine<VoorstellenAdresStateMachine, VoorstellenAdresState>()
@@ -159,7 +157,7 @@ void ConfigureMassTransit(IServiceCollection services, IConfiguration configurat
                     // number of consumers on the endpoint
                     e.PrefetchCount = concurrencyLimit;
 
-                    e.ConfigureConsumers(context, typeof(CreateAdresVoorstelCommandConsumer).Assembly, typeof(HelloMessageConsumer).Assembly);
+                    e.ConfigureConsumers(context, typeof(CreateAdresVoorstelCommandConsumer).Assembly);
                     e.UseConsumeFilter(typeof(ApplicationBusConsumerFilter<>), context);
                     e.UseConsumeFilter(typeof(UnitOfWorkConsumerFilter<>), context);
 
@@ -181,9 +179,6 @@ void ConfigureMassTransit(IServiceCollection services, IConfiguration configurat
             });
         }
     });
-
-    // processors
-    //services.AddHostedService<HelloMessagePublisher>();
 
     services.AddQuartz(q =>
     {
