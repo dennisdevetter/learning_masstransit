@@ -1,4 +1,5 @@
-﻿using LearningMassTransit.Contracts.Commands;
+﻿using System.Threading.Tasks;
+using LearningMassTransit.Contracts.Commands;
 using LearningMassTransit.Contracts.Dtos;
 using LearningMassTransit.Domain.Lara;
 using LearningMassTransit.Messaging.Lara;
@@ -47,36 +48,19 @@ public class VoorstellenAdresStateMachine : MassTransitStateMachine<VoorstellenA
         Initially(
             When(VoorstellenAdresRequest)
                 .TransitionTo(AdresVoorstelCreating)
-                .Then(async context =>
-                {
-                    await context.Send<CreateAdresVoorstelCommand>(new
-                    {
-                        Adres = context.Data.Data,
-                        CorrelationId = context.Data.WorkflowId,
-                        __correlationId = context.Data.WorkflowId
-                    });
-                }));
+                .Then(async context => await SendCreateAdresVoorstelCommand(context)));
 
         During(AdresVoorstelCreating,
             Ignore(VoorstellenAdresRequest),
             When(AdresVoorstelCreatedEvent)
                 .TransitionTo(AdresVoorstelCreated));
-        
+
         During(AdresVoorstelCreated,
             Ignore(VoorstellenAdresRequest),
             Ignore(AdresVoorstelCreatedEvent),
             When(ProposeStreetNameTicketCompletedEvent)
                 .TransitionTo(AdresStatusChanging)
-                .Then(async context =>
-                {
-                    await context.Send<ChangeAdresStatusCommand>(new
-                    {
-                        context.Data.ObjectId,
-                        context.Data.CorrelationId,
-                        Approved = !string.IsNullOrWhiteSpace(context.Data.ObjectId),
-                        __correlationId = context.Data.CorrelationId
-                    });
-                }));
+                .Then(async context => await SendChangeAdresStatusCommand(context)));
 
         During(AdresStatusChanging,
             Ignore(VoorstellenAdresRequest),
@@ -111,8 +95,24 @@ public class VoorstellenAdresStateMachine : MassTransitStateMachine<VoorstellenA
         return Newtonsoft.Json.JsonConvert.SerializeObject(data);
     }
 
-    private static CreateAdresVoorstelDto? DeserializeData(string data)
+    private static async Task SendCreateAdresVoorstelCommand(BehaviorContext<VoorstellenAdresState, VoorstellenAdresRequestEvent> context)
     {
-        return Newtonsoft.Json.JsonConvert.DeserializeObject<CreateAdresVoorstelDto>(data);
+        await context.Send<CreateAdresVoorstelCommand>(new
+        {
+            Adres = context.Data.Data,
+            CorrelationId = context.Data.WorkflowId,
+            __correlationId = context.Data.WorkflowId
+        });
+    }
+
+    private static async Task SendChangeAdresStatusCommand(BehaviorContext<VoorstellenAdresState, ProposeStreetNameTicketCompletedEvent> context)
+    {
+        await context.Send<ChangeAdresStatusCommand>(new
+        {
+            context.Data.ObjectId,
+            context.Data.CorrelationId,
+            Approved = !string.IsNullOrWhiteSpace(context.Data.ObjectId),
+            __correlationId = context.Data.CorrelationId
+        });
     }
 }
