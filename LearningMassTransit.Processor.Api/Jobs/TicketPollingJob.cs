@@ -72,10 +72,9 @@ public class TicketPollingJob : IJob
         {
             return;
         }
-        
+
         // update ticket
-        ticket.Result = ticketResult.result;
-        ticket.Status = TicketStatusEnum.Completed;
+        ticket.SetComplete(ticketResult.result);
 
         // notify saga
         await _applicationBus.Publish(new ProposeStreetNameTicketCompletedEvent
@@ -102,8 +101,7 @@ public class TicketPollingJob : IJob
         }
 
         // update ticket
-        ticket.Result = ticketResult.result;
-        ticket.Status = TicketStatusEnum.Completed;
+        ticket.SetComplete(ticketResult.result);
 
         // notify saga
         await _applicationBus.Publish(new AdresStatusTicketCompletedEvent

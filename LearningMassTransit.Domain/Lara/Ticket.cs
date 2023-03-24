@@ -12,4 +12,11 @@ public class Ticket: Entity<string>
     public ActieEnum Actie { get; set; }
     public string Result { get; set; }
     public TicketStatusEnum Status { get; set; }
+
+    public void SetComplete(string result)
+    {
+        Status = TicketStatusEnum.Completed;
+        Result = result;
+        ModifiedDate = DateTime.UtcNow;
+    }
 }
