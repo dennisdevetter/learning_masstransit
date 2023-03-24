@@ -34,6 +34,8 @@ public class VoorstellenAdresStateMachine : MassTransitStateMachine<VoorstellenA
                 Data = Newtonsoft.Json.JsonConvert.SerializeObject(context.Message.Data)
             });
         });
+
+        Event(() => AdresVoorstelCreatedEvent, x => x.CorrelateById(i => i.CorrelationId, c => c.Message.CorrelationId));
     }
 
     private void DefineBehaviour()
@@ -46,14 +48,19 @@ public class VoorstellenAdresStateMachine : MassTransitStateMachine<VoorstellenA
                     await context.Send<CreateAdresVoorstelCommand>(new
                     {
                         Adres = context.Data.Data,
+                        CorrelationId = context.Data.WorkflowId,
                         __correlationId = context.Data.WorkflowId
                     });
                 }));
-        
+
         During(AdresVoorstelCreating,
             Ignore(VoorstellenAdresRequest),
             When(AdresVoorstelCreatedEvent)
-                .TransitionTo(AdresVoorstelCreated));
+                .TransitionTo(AdresVoorstelCreated)
+            .Then(context =>
+                {
+                    
+                }));
     }
 
     public State AdresVoorstelCreating { get; private set; }
@@ -61,5 +68,5 @@ public class VoorstellenAdresStateMachine : MassTransitStateMachine<VoorstellenA
 
 
     public Event<VoorstellenAdresRequestEvent> VoorstellenAdresRequest { get; private set; }
-    public Event<AdresVoorstelCreatedEvent> AdresVoorstelCreatedEvent{ get; private set; }
+    public Event<AdresVoorstelCreatedEvent> AdresVoorstelCreatedEvent { get; private set; }
 }

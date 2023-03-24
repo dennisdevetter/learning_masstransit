@@ -124,7 +124,7 @@ void ConfigureMassTransit(IServiceCollection services, IConfiguration configurat
         x.AddTransactionalBus();
 
         x.AddConsumers(typeof(HelloMessageConsumer).Assembly);
-        x.AddConsumers(typeof(Program).Assembly);
+        x.AddConsumers(typeof(CreateAdresVoorstelCommandConsumer).Assembly);
 
         x.AddSagaStateMachine<VoorstellenAdresStateMachine, VoorstellenAdresState>()
             .EntityFrameworkRepository(r =>
@@ -151,13 +151,14 @@ void ConfigureMassTransit(IServiceCollection services, IConfiguration configurat
                 });
                 cfg.ConfigureEndpoints(context);
 
-                cfg.ReceiveEndpoint("queue", e =>
+                cfg.ReceiveEndpoint("sagas", e =>
                 {
                     const int concurrencyLimit = 20; // this can go up, depending upon the database capacity
 
                     // number of consumers on the endpoint
                     e.PrefetchCount = concurrencyLimit;
 
+                    e.ConfigureConsumers(context, typeof(CreateAdresVoorstelCommandConsumer).Assembly);
                     e.UseConsumeFilter(typeof(ApplicationBusConsumerFilter<>), context);
                     e.UseConsumeFilter(typeof(UnitOfWorkConsumerFilter<>), context);
 
