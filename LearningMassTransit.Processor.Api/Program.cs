@@ -17,12 +17,12 @@ using System.Reflection;
 using LearningMassTransit.Application.Sagas;
 using LearningMassTransit.Contracts.Requests;
 using LearningMassTransit.Domain.Lara;
-using LearningMassTransit.Application.Sagas.Handlers;
 using LearningMassTransit.Infrastructure.Api.Routing;
-using LearningMassTransit.Processor.Api.Consumers;
 using MediatR;
 using LearningMassTransit.Infrastructure.Messaging.Filters;
 using EndpointConvention = LearningMassTransit.Infrastructure.Messaging.EndpointConvention;
+using LearningMassTransit.Application.Handlers;
+using LearningMassTransit.Consumers;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigureServices(builder.Services, builder.Configuration);

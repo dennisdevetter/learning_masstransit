@@ -8,7 +8,7 @@ using LearningMassTransit.Infrastructure.Messaging;
 using LearningMassTransit.Messaging.Lara;
 using MediatR;
 
-namespace LearningMassTransit.Application.Sagas.Handlers;
+namespace LearningMassTransit.Application.Handlers;
 
 public class CreateAdresVoorstelCommandHandler : IRequestHandler<CreateAdresVoorstelCommand>
 {

@@ -24,9 +24,4 @@
 		<ProjectReference Include="..\LearningMassTransit.Messaging\LearningMassTransit.Messaging.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Handlers\" />
-	  <Folder Include="Sagas\Handlers\" />
-	</ItemGroup>
-
 </Project>

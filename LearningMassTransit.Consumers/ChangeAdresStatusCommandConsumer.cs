@@ -3,7 +3,7 @@ using LearningMassTransit.Contracts.Commands;
 using MassTransit;
 using MediatR;
 
-namespace LearningMassTransit.Processor.Api.Consumers;
+namespace LearningMassTransit.Consumers;
 
 public class ChangeAdresStatusCommandConsumer : IConsumer<ChangeAdresStatusCommand>
 {
