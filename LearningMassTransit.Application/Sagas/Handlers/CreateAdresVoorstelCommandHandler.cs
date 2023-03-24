@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using LearningMassTransit.Contracts.Commands;
+using LearningMassTransit.Domain;
 using LearningMassTransit.Domain.Lara;
 using LearningMassTransit.Infrastructure.Database;
 using LearningMassTransit.Infrastructure.Messaging;
@@ -13,9 +14,9 @@ namespace LearningMassTransit.Application.Sagas.Handlers;
 public class CreateAdresVoorstelCommandHandler : IRequestHandler<CreateAdresVoorstelCommand>
 {
     private readonly IApplicationBus _applicationBus;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly ILaraUnitOfWork _unitOfWork;
 
-    public CreateAdresVoorstelCommandHandler(IApplicationBus applicationBus, IUnitOfWork unitOfWork)
+    public CreateAdresVoorstelCommandHandler(IApplicationBus applicationBus, ILaraUnitOfWork unitOfWork)
     {
         _applicationBus = applicationBus;
         _unitOfWork = unitOfWork;
@@ -39,6 +40,9 @@ public class CreateAdresVoorstelCommandHandler : IRequestHandler<CreateAdresVoor
             Status = TicketStatusEnum.Waiting,
             TicketId = ticketId,
         };
+
+        await _unitOfWork.Tickets.Add(ticket, cancellationToken);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         await _applicationBus.Publish(new AdresVoorstelCreatedEvent
         {

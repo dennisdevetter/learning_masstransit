@@ -121,8 +121,6 @@ void ConfigureMassTransit(IServiceCollection services, IConfiguration configurat
     {
         x.SetKebabCaseEndpointNameFormatter();
 
-        x.AddTransactionalBus();
-
         x.AddConsumers(typeof(HelloMessageConsumer).Assembly);
         x.AddConsumers(typeof(CreateAdresVoorstelCommandConsumer).Assembly);
 
@@ -151,6 +149,9 @@ void ConfigureMassTransit(IServiceCollection services, IConfiguration configurat
                 });
                 cfg.ConfigureEndpoints(context);
 
+                cfg.UseMessageScope(context);
+                cfg.UseInMemoryOutbox();
+
                 cfg.ReceiveEndpoint("sagas", e =>
                 {
                     const int concurrencyLimit = 20; // this can go up, depending upon the database capacity
@@ -158,7 +159,7 @@ void ConfigureMassTransit(IServiceCollection services, IConfiguration configurat
                     // number of consumers on the endpoint
                     e.PrefetchCount = concurrencyLimit;
 
-                    e.ConfigureConsumers(context, typeof(CreateAdresVoorstelCommandConsumer).Assembly);
+                    e.ConfigureConsumers(context, typeof(CreateAdresVoorstelCommandConsumer).Assembly, typeof(HelloMessageConsumer).Assembly);
                     e.UseConsumeFilter(typeof(ApplicationBusConsumerFilter<>), context);
                     e.UseConsumeFilter(typeof(UnitOfWorkConsumerFilter<>), context);
 
@@ -166,7 +167,7 @@ void ConfigureMassTransit(IServiceCollection services, IConfiguration configurat
 
                     e.ConfigureError(y =>
                     {
-                        // TODO
+                        y.UseFilter(new ExceptionsFilter());
                     });
                 });
             });

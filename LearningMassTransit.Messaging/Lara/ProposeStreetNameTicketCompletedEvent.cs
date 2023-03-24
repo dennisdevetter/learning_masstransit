@@ -1,8 +1,9 @@
 ﻿using System;
+using MediatR;
 
 namespace LearningMassTransit.Messaging.Lara;
 
-public class TicketCompleted
+public class ProposeStreetNameTicketCompletedEvent : INotification
 {
     public string TicketId { get; set; }
     public Guid CorrelationId { get; set; }

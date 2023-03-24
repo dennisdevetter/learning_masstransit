@@ -1,4 +1,5 @@
-﻿using LearningMassTransit.Contracts.Commands;
+﻿using System;
+using LearningMassTransit.Contracts.Commands;
 using LearningMassTransit.Domain.Lara;
 using LearningMassTransit.Messaging.Lara;
 using MassTransit;
@@ -35,7 +36,18 @@ public class VoorstellenAdresStateMachine : MassTransitStateMachine<VoorstellenA
             });
         });
 
-        Event(() => AdresVoorstelCreatedEvent, x => x.CorrelateById(i => i.CorrelationId, c => c.Message.CorrelationId));
+        Event(() => AdresVoorstelCreatedEvent, x => x.CorrelateById(i => i.WorkflowId, c => c.Message.CorrelationId));
+
+        Event(() => ProposeStreetNameTicketCompletedEvent, x => 
+                x
+                .CorrelateById(i => i.WorkflowId, c => GetCorrelationIdForTicketEvent(c.Message))
+                .SelectId(c => GetCorrelationIdForTicketEvent(c.Message))
+        );
+    }
+
+    private Guid GetCorrelationIdForTicketEvent(ProposeStreetNameTicketCompletedEvent evt)
+    {
+        return evt.CorrelationId;
     }
 
     private void DefineBehaviour()
@@ -56,17 +68,25 @@ public class VoorstellenAdresStateMachine : MassTransitStateMachine<VoorstellenA
         During(AdresVoorstelCreating,
             Ignore(VoorstellenAdresRequest),
             When(AdresVoorstelCreatedEvent)
-                .TransitionTo(AdresVoorstelCreated)
-            .Then(context =>
+                .TransitionTo(AdresVoorstelCreated));
+        
+        During(AdresVoorstelCreated,
+            Ignore(VoorstellenAdresRequest),
+            Ignore(AdresVoorstelCreatedEvent),
+            When(ProposeStreetNameTicketCompletedEvent)
+                .TransitionTo(AdresVoorstelCompleted)
+                .Then(context =>
                 {
-                    
+                    var foo = context.Data;
                 }));
     }
 
     public State AdresVoorstelCreating { get; private set; }
     public State AdresVoorstelCreated { get; private set; }
+    public State AdresVoorstelCompleted { get; private set; }
 
 
     public Event<VoorstellenAdresRequestEvent> VoorstellenAdresRequest { get; private set; }
     public Event<AdresVoorstelCreatedEvent> AdresVoorstelCreatedEvent { get; private set; }
+    public Event<ProposeStreetNameTicketCompletedEvent> ProposeStreetNameTicketCompletedEvent { get; private set; }
 }
