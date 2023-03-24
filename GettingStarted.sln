@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearningMassTransit.Api", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearningMassTransit.Contracts", "LearningMassTransit.Contracts\LearningMassTransit.Contracts.csproj", "{D5008CBC-EBA3-4349-A21D-1AFA33AAC54A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearningMassTransit.RabbitMQ", "LearningMassTransit.RabbitMQ\LearningMassTransit.RabbitMQ.csproj", "{5DA01CB8-2ABB-48B5-8DB1-6B8C8D2AB091}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearningMassTransit.Infrastructure", "LearningMassTransit.Infrastructure\LearningMassTransit.Infrastructure.csproj", "{9BC7EFAD-3C01-4419-B350-6247866D091D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearningMassTransit.Consumers", "LearningMassTransit.Consumers\LearningMassTransit.Consumers.csproj", "{46B62CD4-134C-461A-A5C4-0970EDD1DE20}"
@@ -45,10 +43,6 @@ Global
 		{D5008CBC-EBA3-4349-A21D-1AFA33AAC54A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5008CBC-EBA3-4349-A21D-1AFA33AAC54A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5008CBC-EBA3-4349-A21D-1AFA33AAC54A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5DA01CB8-2ABB-48B5-8DB1-6B8C8D2AB091}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5DA01CB8-2ABB-48B5-8DB1-6B8C8D2AB091}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5DA01CB8-2ABB-48B5-8DB1-6B8C8D2AB091}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5DA01CB8-2ABB-48B5-8DB1-6B8C8D2AB091}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9BC7EFAD-3C01-4419-B350-6247866D091D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9BC7EFAD-3C01-4419-B350-6247866D091D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BC7EFAD-3C01-4419-B350-6247866D091D}.Release|Any CPU.ActiveCfg = Release|Any CPU

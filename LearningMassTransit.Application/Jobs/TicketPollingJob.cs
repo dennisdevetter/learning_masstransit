@@ -7,7 +7,7 @@ using LearningMassTransit.Infrastructure.Messaging;
 using LearningMassTransit.Messaging.Lara;
 using Quartz;
 
-namespace LearningMassTransit.Processor.Api.Jobs;
+namespace LearningMassTransit.Application.Jobs;
 
 public class TicketPollingJob : IJob
 {

@@ -4,7 +4,6 @@ using LearningMassTransit.Infrastructure;
 using LearningMassTransit.Infrastructure.Messaging;
 using LearningMassTransit.Infrastructure.Options;
 using LearningMassTransit.Infrastructure.Security;
-using LearningMassTransit.Processor.Api.Jobs;
 using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -22,6 +21,7 @@ using MediatR;
 using LearningMassTransit.Infrastructure.Messaging.Filters;
 using EndpointConvention = LearningMassTransit.Infrastructure.Messaging.EndpointConvention;
 using LearningMassTransit.Application.Handlers;
+using LearningMassTransit.Application.Jobs;
 using LearningMassTransit.Consumers;
 
 var builder = WebApplication.CreateBuilder(args);
