@@ -23,48 +23,6 @@ namespace LearningMassTransit.DataAccess.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("LearningMassTransit.Domain.Blogging.Blog", b =>
-                {
-                    b.Property<int>("BlogId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("BlogId"));
-
-                    b.Property<string>("Url")
-                        .HasColumnType("text");
-
-                    b.HasKey("BlogId");
-
-                    b.ToTable("Blogs", "lara");
-                });
-
-            modelBuilder.Entity("LearningMassTransit.Domain.Blogging.Post", b =>
-                {
-                    b.Property<int>("PostId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("PostId"));
-
-                    b.Property<int>("BlogId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Content")
-                        .HasMaxLength(512)
-                        .HasColumnType("character varying(512)");
-
-                    b.Property<string>("Title")
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
-
-                    b.HasKey("PostId");
-
-                    b.HasIndex("BlogId");
-
-                    b.ToTable("Posts", "lara");
-                });
-
             modelBuilder.Entity("LearningMassTransit.Domain.Lara.Ticket", b =>
                 {
                     b.Property<string>("TicketId")
@@ -123,22 +81,6 @@ namespace LearningMassTransit.DataAccess.Migrations
                     b.HasKey("WorkflowId");
 
                     b.ToTable("VoorstellenAdresState", "lara");
-                });
-
-            modelBuilder.Entity("LearningMassTransit.Domain.Blogging.Post", b =>
-                {
-                    b.HasOne("LearningMassTransit.Domain.Blogging.Blog", "Blog")
-                        .WithMany("Posts")
-                        .HasForeignKey("BlogId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Blog");
-                });
-
-            modelBuilder.Entity("LearningMassTransit.Domain.Blogging.Blog", b =>
-                {
-                    b.Navigation("Posts");
                 });
 #pragma warning restore 612, 618
         }

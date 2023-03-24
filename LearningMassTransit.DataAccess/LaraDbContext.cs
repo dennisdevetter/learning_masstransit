@@ -1,5 +1,4 @@
 ﻿using LearningMassTransit.DataAccess.Constants;
-using LearningMassTransit.Domain.Blogging;
 using LearningMassTransit.Domain.Lara;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,8 +16,6 @@ public class LaraDbContext : DbContext
     
     }
 
-    public DbSet<Blog> Blogs { get; set; }
-    public DbSet<Post> Posts { get; set; }
     public DbSet<Ticket> Tickets { get; set; }
     public DbSet<VoorstellenAdresState> VoorstellenAdresStates { get; set; }
 
