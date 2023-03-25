@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 namespace LearningMassTransit.Api.Controllers;
 
 [ApiController]
+[Route("voorstellen")]
 public class BeheerAdressenController : AppController<BeheerAdressenController>
 {
     private readonly IMediator _mediator;
@@ -19,7 +20,7 @@ public class BeheerAdressenController : AppController<BeheerAdressenController>
     }
 
     [HttpPost]
-    [Route("voorstellen")]
+    [Route("")]
     public async Task<IActionResult> CreateAdresVoorstel([FromBody] CreateAdresVoorstelDto createAdresVoorstelDto)
     {
         var request = new CreateAdresVoorstelRequest(createAdresVoorstelDto);
