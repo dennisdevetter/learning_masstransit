@@ -31,6 +31,22 @@ namespace LearningMassTransit.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Workflow",
+                schema: "lara",
+                columns: table => new
+                {
+                    WorkflowId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    WorkflowType = table.Column<int>(type: "integer", nullable: false),
+                    Data = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Workflow", x => x.WorkflowId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "VoorstellenAdresState",
                 schema: "lara",
                 columns: table => new
@@ -38,14 +54,19 @@ namespace LearningMassTransit.DataAccess.Migrations
                     WorkflowId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     CorrelationId = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserId = table.Column<string>(type: "text", nullable: false),
                     CurrentState = table.Column<string>(type: "text", nullable: false),
-                    Data = table.Column<string>(type: "text", nullable: true),
                     RowVersion = table.Column<byte[]>(type: "bytea", rowVersion: true, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_VoorstellenAdresState", x => x.WorkflowId);
+                    table.ForeignKey(
+                        name: "FK_VoorstellenAdresState_Workflow_WorkflowId",
+                        column: x => x.WorkflowId,
+                        principalSchema: "lara",
+                        principalTable: "Workflow",
+                        principalColumn: "WorkflowId",
+                        onDelete: ReferentialAction.Cascade);
                 });
         }
 
@@ -57,6 +78,10 @@ namespace LearningMassTransit.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "VoorstellenAdresState",
+                schema: "lara");
+
+            migrationBuilder.DropTable(
+                name: "Workflow",
                 schema: "lara");
         }
     }

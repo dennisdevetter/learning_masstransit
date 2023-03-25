@@ -23,6 +23,7 @@ using EndpointConvention = LearningMassTransit.Infrastructure.Messaging.Endpoint
 using LearningMassTransit.Application.Handlers;
 using LearningMassTransit.Application.Jobs;
 using LearningMassTransit.Consumers;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigureServices(builder.Services, builder.Configuration);
@@ -127,8 +128,8 @@ void ConfigureMassTransit(IServiceCollection services, IConfiguration configurat
             {
                 r.ConcurrencyMode = ConcurrencyMode.Optimistic;
                 r.ExistingDbContext<LaraDbContext>();
+                r.CustomizeQuery(a => a.Include(s => s.Workflow));
             });
-
 
         //x.AddSagas(entryAssembly);
         //x.AddActivities(entryAssembly);

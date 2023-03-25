@@ -66,21 +66,54 @@ namespace LearningMassTransit.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Data")
-                        .HasColumnType("text");
-
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("bytea");
 
+                    b.HasKey("WorkflowId");
+
+                    b.ToTable("VoorstellenAdresState", "lara");
+                });
+
+            modelBuilder.Entity("LearningMassTransit.Domain.Lara.Workflow", b =>
+                {
+                    b.Property<Guid>("WorkflowId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Data")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("WorkflowType")
+                        .HasColumnType("integer");
+
                     b.HasKey("WorkflowId");
 
-                    b.ToTable("VoorstellenAdresState", "lara");
+                    b.ToTable("Workflow", "lara");
+                });
+
+            modelBuilder.Entity("LearningMassTransit.Domain.Lara.VoorstellenAdresState", b =>
+                {
+                    b.HasOne("LearningMassTransit.Domain.Lara.Workflow", "Workflow")
+                        .WithOne("VoorstellenAdresState")
+                        .HasForeignKey("LearningMassTransit.Domain.Lara.VoorstellenAdresState", "WorkflowId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Workflow");
+                });
+
+            modelBuilder.Entity("LearningMassTransit.Domain.Lara.Workflow", b =>
+                {
+                    b.Navigation("VoorstellenAdresState");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using LearningMassTransit.Contracts.Commands;
 using LearningMassTransit.Contracts.Dtos;
 using LearningMassTransit.Domain.Lara;
@@ -31,12 +32,12 @@ public class VoorstellenAdresStateMachine : MassTransitStateMachine<VoorstellenA
             x.SetSagaFactory(context => new VoorstellenAdresState
             {
                 WorkflowId = context.Message.WorkflowId,
-                UserId = context.Message.UserId,
+                CreationDate = DateTime.UtcNow,
                 CorrelationId = context.CorrelationId ?? context.Message.WorkflowId,
-                Data = SerializeData(context.Message.Data)
             });
         });
 
+        Event(() => AdresVoorstelInitializedEvent, x => x.CorrelateById(i => i.WorkflowId, c => c.Message.CorrelationId));
         Event(() => AdresVoorstelCreatedEvent, x => x.CorrelateById(i => i.WorkflowId, c => c.Message.CorrelationId));
         Event(() => ProposeStreetNameTicketCompletedEvent, x => x.CorrelateById(i => i.WorkflowId, c => c.Message.CorrelationId));
         Event(() => AdresStatusChangeCreatedEvent, x => x.CorrelateById(i => i.WorkflowId, c => c.Message.CorrelationId));
@@ -47,10 +48,17 @@ public class VoorstellenAdresStateMachine : MassTransitStateMachine<VoorstellenA
     {
         Initially(
             When(VoorstellenAdresRequest)
+                .TransitionTo(AdresVoorstelInitializing)
+                .Then(async context => await context.Publish(new AdresVoorstelInitializedEvent{ CorrelationId = context.Data.WorkflowId})));
+
+        During(AdresVoorstelInitializing,
+            Ignore(VoorstellenAdresRequest),
+            When(AdresVoorstelInitializedEvent)
                 .TransitionTo(AdresVoorstelCreating)
                 .Then(async context => await SendCreateAdresVoorstelCommand(context)));
 
         During(AdresVoorstelCreating,
+            Ignore(AdresVoorstelInitializedEvent),
             Ignore(VoorstellenAdresRequest),
             When(AdresVoorstelCreatedEvent)
                 .TransitionTo(AdresVoorstelCreated));
@@ -78,30 +86,35 @@ public class VoorstellenAdresStateMachine : MassTransitStateMachine<VoorstellenA
                 .TransitionTo(Complete));
     }
 
+    public State AdresVoorstelInitializing { get; private set; }
     public State AdresVoorstelCreating { get; private set; }
     public State AdresVoorstelCreated { get; private set; }
     public State AdresStatusChanging { get; private set; }
     public State AdresStatusChanged { get; private set; }
     public State Complete { get; private set; }
 
+    public Event<AdresVoorstelInitializedEvent> AdresVoorstelInitializedEvent { get; private set; }
     public Event<VoorstellenAdresRequestEvent> VoorstellenAdresRequest { get; private set; }
     public Event<AdresVoorstelCreatedEvent> AdresVoorstelCreatedEvent { get; private set; }
     public Event<ProposeStreetNameTicketCompletedEvent> ProposeStreetNameTicketCompletedEvent { get; private set; }
     public Event<AdresStatusChangeCreatedEvent> AdresStatusChangeCreatedEvent { get; private set; }
     public Event<AdresStatusTicketCompletedEvent> AdresStatusTicketCompletedEvent { get; private set; }
 
-    private static string SerializeData(CreateAdresVoorstelDto data)
+    private static CreateAdresVoorstelDto? DeserializeData(string data)
     {
-        return Newtonsoft.Json.JsonConvert.SerializeObject(data);
+        return Newtonsoft.Json.JsonConvert.DeserializeObject<CreateAdresVoorstelDto>(data);
     }
 
-    private static async Task SendCreateAdresVoorstelCommand(BehaviorContext<VoorstellenAdresState, VoorstellenAdresRequestEvent> context)
+    private static async Task SendCreateAdresVoorstelCommand(BehaviorContext<VoorstellenAdresState> context)
     {
+        var correlationId = context.Instance.WorkflowId;
+        var adres = DeserializeData(context.Instance.Workflow.Data);
+        
         await context.Send<CreateAdresVoorstelCommand>(new
         {
-            Adres = context.Data.Data,
-            CorrelationId = context.Data.WorkflowId,
-            __correlationId = context.Data.WorkflowId
+            Adres = adres,
+            CorrelationId = correlationId,
+            __correlationId = correlationId
         });
     }
 
