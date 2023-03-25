@@ -11,11 +11,8 @@ namespace LearningMassTransit.Api.Controllers;
 [Route("workflows")]
 public class WorkflowController : AppController<WorkflowController>
 {
-    private readonly IMediator _mediator;
-
     public WorkflowController(IMediator mediator, ILogger<WorkflowController> logger) : base(mediator, logger)
     {
-        _mediator = mediator;
     }
 
     [HttpGet]

@@ -12,11 +12,8 @@ namespace LearningMassTransit.Api.Controllers;
 [Route("voorstellen")]
 public class BeheerAdressenController : AppController<BeheerAdressenController>
 {
-    private readonly IMediator _mediator;
-
     public BeheerAdressenController(IMediator mediator, ILogger<BeheerAdressenController> logger) : base(mediator, logger)
     {
-        _mediator = mediator;
     }
 
     [HttpPost]
