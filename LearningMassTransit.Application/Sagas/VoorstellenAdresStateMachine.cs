@@ -49,7 +49,7 @@ public class VoorstellenAdresStateMachine : MassTransitStateMachine<VoorstellenA
         Initially(
             When(VoorstellenAdresRequest)
                 .TransitionTo(AdresVoorstelInitializing)
-                .Then(async context => await context.Publish(new AdresVoorstelInitializedEvent{ CorrelationId = context.Data.WorkflowId})));
+                .Then(async context => await PublishInitializedEvent(context)));
 
         During(AdresVoorstelInitializing,
             Ignore(VoorstellenAdresRequest),
@@ -103,6 +103,16 @@ public class VoorstellenAdresStateMachine : MassTransitStateMachine<VoorstellenA
     private static CreateAdresVoorstelDto? DeserializeData(string data)
     {
         return Newtonsoft.Json.JsonConvert.DeserializeObject<CreateAdresVoorstelDto>(data);
+    }
+
+    private async Task PublishInitializedEvent(BehaviorContext<VoorstellenAdresState, VoorstellenAdresRequestEvent> context)
+    {
+        var correlationId = context.Instance.WorkflowId;
+
+        await context.Publish(new AdresVoorstelInitializedEvent
+        {
+            CorrelationId = correlationId
+        });
     }
 
     private static async Task SendCreateAdresVoorstelCommand(BehaviorContext<VoorstellenAdresState> context)
