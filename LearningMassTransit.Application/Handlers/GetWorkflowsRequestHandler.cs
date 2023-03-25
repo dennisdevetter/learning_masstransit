@@ -1,35 +1,29 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Castle.Core.Logging;
 using LearningMassTransit.Contracts.Dtos;
 using LearningMassTransit.Contracts.Requests;
 using LearningMassTransit.Contracts.Responses;
 using LearningMassTransit.Domain;
 using LearningMassTransit.Domain.Lara;
-using LearningMassTransit.Infrastructure.Messaging;
 using MediatR;
-using WorkflowTypeEnum = LearningMassTransit.Contracts.Enums.WorkflowTypeEnum;
 
 namespace LearningMassTransit.Application.Handlers;
 
 public class GetWorkflowsRequestHandler : IRequestHandler<GetWorkflowsRequest, GetWorkflowsResponse>
 {
-    private readonly IApplicationBus _applicationBus;
     private readonly ILaraUnitOfWork _laraUnitOfWork;
 
-    public GetWorkflowsRequestHandler(IApplicationBus applicationBus, ILaraUnitOfWork laraUnitOfWork)
+    public GetWorkflowsRequestHandler(ILaraUnitOfWork laraUnitOfWork)
     {
-        _applicationBus = applicationBus;
         _laraUnitOfWork = laraUnitOfWork;
     }
 
     public async Task<GetWorkflowsResponse> Handle(GetWorkflowsRequest request, CancellationToken cancellationToken)
     {
-        var workflows = await _laraUnitOfWork.Workflows.All(cancellationToken);
+        var workflows = (await _laraUnitOfWork.Workflows.Find(x => true, cancellationToken)).OrderByDescending(x => x.CreationDate).ToList();
 
-        var dtos = workflows?.Select(x => MapToDto(x)).ToList();
+        var dtos = workflows.Select(x => MapToDto(x)).ToList();
 
         return new GetWorkflowsResponse(dtos);
     }
