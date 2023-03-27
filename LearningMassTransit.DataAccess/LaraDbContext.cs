@@ -19,6 +19,7 @@ public class LaraDbContext : DbContext
     public DbSet<Ticket> Tickets { get; set; }
     public DbSet<Workflow> Workflows { get; set; }
     public DbSet<VoorstellenAdresState> VoorstellenAdresStates { get; set; }
+    public DbSet<AtomaireActieState> AtomaireActieStates { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

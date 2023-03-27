@@ -7,6 +7,7 @@ using LearningMassTransit.Contracts.Responses;
 using LearningMassTransit.Domain;
 using LearningMassTransit.Domain.Lara;
 using MediatR;
+using WorkflowTypeEnum = LearningMassTransit.Contracts.Enums.WorkflowTypeEnum;
 
 namespace LearningMassTransit.Application.Handlers;
 
@@ -23,7 +24,7 @@ public class GetWorkflowsRequestHandler : IRequestHandler<GetWorkflowsRequest, G
     {
         var workflows = (await _laraUnitOfWork.Workflows.Find(x => true, cancellationToken)).OrderByDescending(x => x.CreationDate).ToList();
 
-        var dtos = workflows.Select(x => MapToDto(x)).ToList();
+        var dtos = workflows.Select(MapToDto).ToList();
 
         return new GetWorkflowsResponse(dtos);
     }
@@ -35,16 +36,17 @@ public class GetWorkflowsRequestHandler : IRequestHandler<GetWorkflowsRequest, G
             CreationDate = workflow.CreationDate,
             UserId = workflow.UserId,
             WorkflowId = workflow.WorkflowId,
-            WorkflowType = workflow.WorkflowType.ToString(),
+            WorkflowAction = workflow.WorkflowAction.ToString(),
+            WorkflowType = (WorkflowTypeEnum)workflow.WorkflowType,
             Status = MapStatus(workflow)
         };
     }
 
     private string? MapStatus(Workflow workflow)
     {
-        switch (workflow.WorkflowType)
+        switch (workflow.WorkflowAction)
         {
-            case Domain.Lara.WorkflowTypeEnum.NieuwAdresMetStatusWijziging: return workflow.VoorstellenAdresState?.CurrentState;
+            case WorkflowActionEnum.NieuwAdresMetStatusWijziging: return workflow.VoorstellenAdresState?.CurrentState;
             default: return null;
         }
     }

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LearningMassTransit.DataAccess.Migrations
 {
     [DbContext(typeof(LaraDbContext))]
-    [Migration("20230325083947_InitialCreate")]
+    [Migration("20230327072537_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,34 @@ namespace LearningMassTransit.DataAccess.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("LearningMassTransit.Domain.Lara.AtomaireActieState", b =>
+                {
+                    b.Property<Guid>("WorkflowId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Actie")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("CorrelationId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CurrentState")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("bytea");
+
+                    b.HasKey("WorkflowId");
+
+                    b.ToTable("AtomaireActieState", "lara");
+                });
 
             modelBuilder.Entity("LearningMassTransit.Domain.Lara.Ticket", b =>
                 {
@@ -94,12 +122,26 @@ namespace LearningMassTransit.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("WorkflowAction")
+                        .HasColumnType("integer");
+
                     b.Property<int>("WorkflowType")
                         .HasColumnType("integer");
 
                     b.HasKey("WorkflowId");
 
                     b.ToTable("Workflow", "lara");
+                });
+
+            modelBuilder.Entity("LearningMassTransit.Domain.Lara.AtomaireActieState", b =>
+                {
+                    b.HasOne("LearningMassTransit.Domain.Lara.Workflow", "Workflow")
+                        .WithOne("AtomaireActieState")
+                        .HasForeignKey("LearningMassTransit.Domain.Lara.AtomaireActieState", "WorkflowId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Workflow");
                 });
 
             modelBuilder.Entity("LearningMassTransit.Domain.Lara.VoorstellenAdresState", b =>
@@ -115,6 +157,8 @@ namespace LearningMassTransit.DataAccess.Migrations
 
             modelBuilder.Entity("LearningMassTransit.Domain.Lara.Workflow", b =>
                 {
+                    b.Navigation("AtomaireActieState");
+
                     b.Navigation("VoorstellenAdresState");
                 });
 #pragma warning restore 612, 618

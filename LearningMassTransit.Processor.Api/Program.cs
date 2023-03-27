@@ -131,6 +131,14 @@ void ConfigureMassTransit(IServiceCollection services, IConfiguration configurat
                 r.CustomizeQuery(a => a.Include(s => s.Workflow));
             });
 
+        x.AddSagaStateMachine<VoorstellenAdresStateMachine, VoorstellenAdresState>()
+            .EntityFrameworkRepository(r =>
+            {
+                r.ConcurrencyMode = ConcurrencyMode.Optimistic;
+                r.ExistingDbContext<LaraDbContext>();
+                r.CustomizeQuery(a => a.Include(s => s.Workflow));
+            });
+
         //x.AddSagas(entryAssembly);
         //x.AddActivities(entryAssembly);
 

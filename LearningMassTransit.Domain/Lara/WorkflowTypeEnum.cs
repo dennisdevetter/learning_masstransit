@@ -2,6 +2,6 @@
 
 public enum WorkflowTypeEnum
 {
-    None = 0,
-    NieuwAdresMetStatusWijziging = 1,
+    Atomair = 0,
+    Complex = 1,
 }
