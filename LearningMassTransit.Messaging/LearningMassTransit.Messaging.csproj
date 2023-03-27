@@ -1,13 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-	  <RootNamespace>LearningMassTransit.Messaging</RootNamespace>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<RootNamespace>LearningMassTransit.Messaging</RootNamespace>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\LearningMassTransit.Contracts\LearningMassTransit.Contracts.csproj" />
-    <ProjectReference Include="..\LearningMassTransit.Domain\LearningMassTransit.Domain.csproj" />
-  </ItemGroup>
-
+	<ItemGroup>
+		<PackageReference Include="MediatR" Version="11.1.0" />
+		<PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+	</ItemGroup>
 </Project>
