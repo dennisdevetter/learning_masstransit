@@ -1,9 +1,6 @@
-
-using System.Reflection;
 using LearningMassTransit.DataAccess;
 using MassTransit;
 using NSwag;
-using MediatR;
 using Correlate.DependencyInjection;
 using LearningMassTransit.Application;
 using LearningMassTransit.Infrastructure.Options;
@@ -15,7 +12,6 @@ using Microsoft.Extensions.Hosting;
 using LearningMassTransit.Infrastructure;
 using LearningMassTransit.Infrastructure.Messaging;
 using LearningMassTransit.Infrastructure.Api.Routing;
-using LearningMassTransit.Application.RequestHandlers;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigureServices(builder.Services, builder.Configuration);
