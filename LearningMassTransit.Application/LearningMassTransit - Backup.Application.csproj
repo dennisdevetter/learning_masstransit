@@ -27,7 +27,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Mappers\" />
+	  <Folder Include="NewFolder\" />
 	</ItemGroup>
 
 </Project>

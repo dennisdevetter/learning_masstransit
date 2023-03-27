@@ -7,8 +7,10 @@ using LearningMassTransit.Contracts.Responses;
 using LearningMassTransit.Domain;
 using LearningMassTransit.Domain.Lara;
 using MediatR;
+using ActieEnum = LearningMassTransit.Contracts.Enums.ActieEnum;
+using TicketStatusEnum = LearningMassTransit.Contracts.Enums.TicketStatusEnum;
 
-namespace LearningMassTransit.Application.Handlers;
+namespace LearningMassTransit.Application.RequestHandlers;
 
 public class GetTicketsRequestHandler : IRequestHandler<GetTicketsRequest, GetTicketsResponse>
 {
@@ -22,7 +24,7 @@ public class GetTicketsRequestHandler : IRequestHandler<GetTicketsRequest, GetTi
     public async Task<GetTicketsResponse> Handle(GetTicketsRequest request, CancellationToken cancellationToken)
     {
         var tickets = (await _laraUnitOfWork.Tickets.Find(x => true, cancellationToken)).OrderByDescending(x => x.CreationDate).ToList();
-        
+
         var dtos = tickets.Select(x => MapToDto(x)).ToList();
 
         return new GetTicketsResponse(dtos);
@@ -34,10 +36,10 @@ public class GetTicketsRequestHandler : IRequestHandler<GetTicketsRequest, GetTi
         {
             CreationDate = ticket.CreationDate,
             CorrelationId = ticket.CorrelationId,
-            Status = ticket.Status.ToString(),
+            Status = (TicketStatusEnum)ticket.Status,
             TicketId = ticket.TicketId,
             ModifiedDate = ticket.ModifiedDate,
-            Actie = ticket.Actie.ToString(),
+            Actie = (ActieEnum)ticket.Actie,
             Result = ticket.Result
         };
     }

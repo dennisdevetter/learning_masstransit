@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using LearningMassTransit.Contracts.Commands;
 using LearningMassTransit.Contracts.Dtos;
+using LearningMassTransit.Contracts.Enums;
 using LearningMassTransit.Domain.Lara;
 using LearningMassTransit.Messaging.Lara;
 using MassTransit;
@@ -100,9 +101,9 @@ public class VoorstellenAdresStateMachine : MassTransitStateMachine<VoorstellenA
     public Event<AdresStatusChangeCreatedEvent> AdresStatusChangeCreatedEvent { get; private set; }
     public Event<AdresStatusTicketCompletedEvent> AdresStatusTicketCompletedEvent { get; private set; }
 
-    private static CreateAdresVoorstelDto? DeserializeData(string data)
+    private static CreateAdresVoorstelMetStatusDto? DeserializeData(string data)
     {
-        return Newtonsoft.Json.JsonConvert.DeserializeObject<CreateAdresVoorstelDto>(data);
+        return Newtonsoft.Json.JsonConvert.DeserializeObject<CreateAdresVoorstelMetStatusDto>(data);
     }
 
     private async Task PublishInitializedEvent(BehaviorContext<VoorstellenAdresState, VoorstellenAdresRequestEvent> context)
@@ -130,11 +131,13 @@ public class VoorstellenAdresStateMachine : MassTransitStateMachine<VoorstellenA
 
     private static async Task SendChangeAdresStatusCommand(BehaviorContext<VoorstellenAdresState, ProposeStreetNameTicketCompletedEvent> context)
     {
+        var adres = DeserializeData(context.Instance.Workflow.Data);
+
         await context.Send<ChangeAdresStatusCommand>(new
         {
             context.Data.ObjectId,
             context.Data.CorrelationId,
-            Approved = !string.IsNullOrWhiteSpace(context.Data.ObjectId),
+            adres?.Status,
             __correlationId = context.Data.CorrelationId
         });
     }

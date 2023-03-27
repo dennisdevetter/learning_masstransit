@@ -7,9 +7,8 @@ using LearningMassTransit.Contracts.Responses;
 using LearningMassTransit.Domain;
 using LearningMassTransit.Domain.Lara;
 using MediatR;
-using WorkflowTypeEnum = LearningMassTransit.Contracts.Enums.WorkflowTypeEnum;
 
-namespace LearningMassTransit.Application.Handlers;
+namespace LearningMassTransit.Application.RequestHandlers;
 
 public class GetWorkflowsRequestHandler : IRequestHandler<GetWorkflowsRequest, GetWorkflowsResponse>
 {
@@ -36,10 +35,19 @@ public class GetWorkflowsRequestHandler : IRequestHandler<GetWorkflowsRequest, G
             CreationDate = workflow.CreationDate,
             UserId = workflow.UserId,
             WorkflowId = workflow.WorkflowId,
-            WorkflowAction = workflow.WorkflowAction.ToString(),
-            WorkflowType = (WorkflowTypeEnum)workflow.WorkflowType,
+            WorkflowAction = MapAction(workflow),
+            WorkflowType = (Contracts.Enums.WorkflowTypeEnum)workflow.WorkflowType,
             Status = MapStatus(workflow)
         };
+    }
+
+    private string? MapAction(Workflow workflow)
+    {
+        if (workflow.WorkflowType == WorkflowTypeEnum.Complex)
+        {
+            return workflow.WorkflowAction.ToString();
+        }
+        return workflow.AtomaireActieState?.Actie;
     }
 
     private string? MapStatus(Workflow workflow)
@@ -47,6 +55,7 @@ public class GetWorkflowsRequestHandler : IRequestHandler<GetWorkflowsRequest, G
         switch (workflow.WorkflowAction)
         {
             case WorkflowActionEnum.NieuwAdresMetStatusWijziging: return workflow.VoorstellenAdresState?.CurrentState;
+            case WorkflowActionEnum.AtomaireActie: return workflow.AtomaireActieState?.CurrentState;
             default: return null;
         }
     }

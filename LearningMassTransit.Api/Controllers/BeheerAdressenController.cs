@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 namespace LearningMassTransit.Api.Controllers;
 
 [ApiController]
-[Route("voorstellen")]
+[Route("api/v1/beheer/adressen")]
 public class BeheerAdressenController : AppController<BeheerAdressenController>
 {
     public BeheerAdressenController(IMediator mediator, ILogger<BeheerAdressenController> logger) : base(mediator, logger)
@@ -17,11 +17,20 @@ public class BeheerAdressenController : AppController<BeheerAdressenController>
     }
 
     [HttpPost]
-    [Route("")]
-    public async Task<IActionResult> CreateAdresVoorstel([FromBody] CreateAdresVoorstelDto createAdresVoorstelDto)
+    [Route("nieuwadresmetstatus")]
+    public async Task<IActionResult> NieuwAdresMetStatus([FromBody] CreateAdresVoorstelMetStatusDto createAdresVoorstelMetStatusDto)
+    {
+        var request = new CreateAdresVoorstelMetStatusRequest(createAdresVoorstelMetStatusDto);
+
+        return await ExecuteRequest<CreateAdresVoorstelMetStatusRequest, CreateAdresVoorstelMetStatusResponse>(request, response => new AcceptedResult(string.Empty, response));
+    }
+
+    [HttpPost]
+    [Route("nieuwadres")]
+    public async Task<IActionResult> NieuwAdres([FromBody] CreateAdresVoorstelDto createAdresVoorstelDto)
     {
         var request = new CreateAdresVoorstelRequest(createAdresVoorstelDto);
 
-        return await ExecuteRequest<CreateAdresVoorstelRequest, CreateAdresVoorstelResponse>(request, response => new AcceptedResult(string.Empty, response));
+        return await ExecuteRequest<CreateAdresVoorstelRequest, CreateAdresVoorstelResponse>(request);
     }
 }

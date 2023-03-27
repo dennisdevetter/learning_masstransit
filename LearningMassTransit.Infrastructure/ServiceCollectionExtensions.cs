@@ -1,4 +1,5 @@
-﻿using LearningMassTransit.Infrastructure.Api;
+﻿using System.Text.Json.Serialization;
+using LearningMassTransit.Infrastructure.Api;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LearningMassTransit.Infrastructure;
@@ -12,6 +13,10 @@ public static class ServiceCollectionExtensions
         return services
             .AddControllers(config => {
                 config.Filters.AddService<TransactionFilter>();
-            });
+            })
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            }); ;
     }
 }

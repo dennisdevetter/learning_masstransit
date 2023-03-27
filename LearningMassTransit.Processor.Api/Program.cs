@@ -12,18 +12,16 @@ using Microsoft.Extensions.Hosting;
 using NSwag;
 using Quartz;
 using System;
-using System.Reflection;
 using LearningMassTransit.Application.Sagas;
 using LearningMassTransit.Contracts.Requests;
 using LearningMassTransit.Domain.Lara;
 using LearningMassTransit.Infrastructure.Api.Routing;
-using MediatR;
 using LearningMassTransit.Infrastructure.Messaging.Filters;
 using EndpointConvention = LearningMassTransit.Infrastructure.Messaging.EndpointConvention;
-using LearningMassTransit.Application.Handlers;
 using LearningMassTransit.Application.Jobs;
 using LearningMassTransit.Consumers;
 using Microsoft.EntityFrameworkCore;
+using LearningMassTransit.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigureServices(builder.Services, builder.Configuration);
@@ -91,7 +89,7 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
 
     ConfigureApplicationContext(services);
 
-    ConfigureMediatR(services);
+    ConfigureApplication(services);
 }
 
 
@@ -131,7 +129,7 @@ void ConfigureMassTransit(IServiceCollection services, IConfiguration configurat
                 r.CustomizeQuery(a => a.Include(s => s.Workflow));
             });
 
-        x.AddSagaStateMachine<VoorstellenAdresStateMachine, VoorstellenAdresState>()
+        x.AddSagaStateMachine<AtomaireActieStateMachine, AtomaireActieState>()
             .EntityFrameworkRepository(r =>
             {
                 r.ConcurrencyMode = ConcurrencyMode.Optimistic;
@@ -213,7 +211,7 @@ void ConfigureMassTransit(IServiceCollection services, IConfiguration configurat
         options.WaitForJobsToComplete = true;
     });
 
-    EndpointConvention.RegisterServiceBusEndpoints(new Uri("queue:sagas"), typeof(CreateAdresVoorstelRequest).Assembly);
+    EndpointConvention.RegisterServiceBusEndpoints(new Uri("queue:sagas"), typeof(CreateAdresVoorstelMetStatusRequest).Assembly);
 }
 
 
@@ -223,7 +221,7 @@ void ConfigureApplicationContext(IServiceCollection services)
     services.AddTransient<IApplicationContext, ApplicationContext>();
 }
 
-void ConfigureMediatR(IServiceCollection services)
+void ConfigureApplication(IServiceCollection services)
 {
-    services.AddMediatR(typeof(CreateAdresVoorstelCommandHandler).GetTypeInfo().Assembly);
+    services.ConfigureApplication();
 }

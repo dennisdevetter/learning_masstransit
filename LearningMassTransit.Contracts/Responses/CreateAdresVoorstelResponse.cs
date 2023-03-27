@@ -1,9 +1,13 @@
-﻿
+﻿using System;
+
 namespace LearningMassTransit.Contracts.Responses;
 
-public class CreateAdresVoorstelResponse : ResponseOf<bool>
+public class CreateAdresVoorstelResponse
 {
-    public CreateAdresVoorstelResponse() : base(true)
+    public Guid WorkflowId { get; }
+
+    public CreateAdresVoorstelResponse(Guid workflowId)
     {
+        WorkflowId = workflowId;
     }
 }

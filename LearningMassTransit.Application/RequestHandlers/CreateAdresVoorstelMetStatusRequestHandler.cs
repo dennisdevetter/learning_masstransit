@@ -10,31 +10,31 @@ using LearningMassTransit.Messaging.Lara;
 using MediatR;
 using Newtonsoft.Json;
 
-namespace LearningMassTransit.Application.Handlers;
+namespace LearningMassTransit.Application.RequestHandlers;
 
-public class CreateAdresVoorstelRequestHandler : IRequestHandler<CreateAdresVoorstelRequest, CreateAdresVoorstelResponse>
+public class CreateAdresVoorstelMetStatusRequestHandler : IRequestHandler<CreateAdresVoorstelMetStatusRequest, CreateAdresVoorstelMetStatusResponse>
 {
     private readonly IApplicationBus _applicationBus;
     private readonly ILaraUnitOfWork _laraUnitOfWork;
 
-    public CreateAdresVoorstelRequestHandler(IApplicationBus applicationBus, ILaraUnitOfWork laraUnitOfWork)
+    public CreateAdresVoorstelMetStatusRequestHandler(IApplicationBus applicationBus, ILaraUnitOfWork laraUnitOfWork)
     {
         _applicationBus = applicationBus;
         _laraUnitOfWork = laraUnitOfWork;
     }
 
-    public async Task<CreateAdresVoorstelResponse> Handle(CreateAdresVoorstelRequest request, CancellationToken cancellationToken)
+    public async Task<CreateAdresVoorstelMetStatusResponse> Handle(CreateAdresVoorstelMetStatusRequest metStatusRequest, CancellationToken cancellationToken)
     {
         // TODO add backend validation ?
 
-        var workflow = await CreateWorkflow(request, cancellationToken);
+        var workflow = await CreateWorkflow(metStatusRequest, cancellationToken);
 
         await StartSaga(workflow, cancellationToken);
 
-        return new CreateAdresVoorstelResponse();
+        return new CreateAdresVoorstelMetStatusResponse();
     }
 
-    private async Task<Workflow> CreateWorkflow(CreateAdresVoorstelRequest request, CancellationToken cancellationToken)
+    private async Task<Workflow> CreateWorkflow(CreateAdresVoorstelMetStatusRequest metStatusRequest, CancellationToken cancellationToken)
     {
         var userId = "7D35AFD6933D4049BD17A4560BA30674";
 
@@ -42,13 +42,15 @@ public class CreateAdresVoorstelRequestHandler : IRequestHandler<CreateAdresVoor
         {
             WorkflowId = Guid.NewGuid(),
             UserId = userId,
-            Data = JsonConvert.SerializeObject(request.Adres),
+            Data = JsonConvert.SerializeObject(metStatusRequest.Adres),
             CreationDate = DateTime.UtcNow,
-            WorkflowType = WorkflowTypeEnum.NieuwAdresMetStatusWijziging,
+            WorkflowAction = WorkflowActionEnum.NieuwAdresMetStatusWijziging,
+            WorkflowType = WorkflowTypeEnum.Complex
         };
 
         await _laraUnitOfWork.Workflows.Add(workflow, cancellationToken);
         await _laraUnitOfWork.SaveChangesAsync(cancellationToken);
+
         return workflow;
     }
 

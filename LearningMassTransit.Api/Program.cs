@@ -5,7 +5,7 @@ using MassTransit;
 using NSwag;
 using MediatR;
 using Correlate.DependencyInjection;
-using LearningMassTransit.Application.Handlers;
+using LearningMassTransit.Application;
 using LearningMassTransit.Infrastructure.Options;
 using LearningMassTransit.Infrastructure.Security;
 using Microsoft.AspNetCore.Builder;
@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using LearningMassTransit.Infrastructure;
 using LearningMassTransit.Infrastructure.Messaging;
 using LearningMassTransit.Infrastructure.Api.Routing;
+using LearningMassTransit.Application.RequestHandlers;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigureServices(builder.Services, builder.Configuration);
@@ -80,9 +81,14 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
 
     ConfigureMassTransit(services, configuration);
 
-    ConfigureMediatR(services);
-
     ConfigureApplicationContext(services);
+
+    ConfigureApplication(services);
+}
+
+void ConfigureApplication(IServiceCollection services)
+{
+    services.ConfigureApplication();
 }
 
 void ConfigureCorrelation(IServiceCollection services)
@@ -137,11 +143,6 @@ void ConfigureMassTransit(IServiceCollection services, IConfiguration configurat
             });
         }
     });
-}
-
-void ConfigureMediatR(IServiceCollection services)
-{
-    services.AddMediatR(typeof(CreateAdresVoorstelRequestHandler).GetTypeInfo().Assembly);
 }
 
 void ConfigureApplicationContext(IServiceCollection services)
