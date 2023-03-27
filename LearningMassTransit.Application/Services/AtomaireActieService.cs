@@ -6,7 +6,6 @@ using LearningMassTransit.Domain;
 using LearningMassTransit.Domain.Lara;
 using LearningMassTransit.Infrastructure.Messaging;
 using LearningMassTransit.Messaging.Lara;
-using Newtonsoft.Json;
 
 namespace LearningMassTransit.Application.Services;
 
@@ -23,8 +22,6 @@ public class AtomaireActieService : IAtomaireActieService
 
     public async Task<AtomaireActieOutputDto> Execute(string data, Func<Guid, Task<TicketDto>> executor, CancellationToken cancellationToken)
     {
-        // TODO add backend validation ?
-
         var workflow = await CreateWorkflow(data, cancellationToken);
 
         var ticket = await executor(workflow.WorkflowId);
@@ -39,7 +36,7 @@ public class AtomaireActieService : IAtomaireActieService
         };
     }
 
-    private async Task<Workflow> CreateWorkflow<TData>(TData data, CancellationToken cancellationToken)
+    private async Task<Workflow> CreateWorkflow(string data, CancellationToken cancellationToken)
     {
         var userId = "7D35AFD6933D4049BD17A4560BA30674";
 
@@ -47,7 +44,7 @@ public class AtomaireActieService : IAtomaireActieService
         {
             WorkflowId = Guid.NewGuid(),
             UserId = userId,
-            Data = JsonConvert.SerializeObject(data),
+            Data = data,
             CreationDate = DateTime.UtcNow,
             WorkflowAction = WorkflowActionEnum.AtomaireActie,
             WorkflowType = WorkflowTypeEnum.Atomair

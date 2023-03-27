@@ -22,7 +22,13 @@ public class CreateAdresVoorstelService : ICreateAdresVoorstelService
     public async Task<TicketDto> CreateAdresVoorstel(CreateAdresVoorstelDto createAdresVoorstelDto, Guid correlationId, CancellationToken cancellationToken)
     {
         // todo
+        // add validation
         // do call to basisregisters
+
+        if (createAdresVoorstelDto.Busnummer == "123")
+        {
+            throw new Exception("validation error");
+        }
 
         var ticketId = Guid.NewGuid().ToString();
 
