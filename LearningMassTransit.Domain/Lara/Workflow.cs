@@ -8,7 +8,7 @@ public class Workflow: Entity<Guid>
     public Guid WorkflowId { get; set; }
     public string UserId { get; set; }
     public DateTime CreationDate { get; set; }
-    public WorkflowActieEnum WorkflowActie { get; set; }
+    public WorkflowActieEnum Actie { get; set; }
     public WorkflowTypeEnum WorkflowType { get; set; }
     public string Data { get; set; }
 

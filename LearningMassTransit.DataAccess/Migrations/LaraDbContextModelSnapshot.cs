@@ -109,6 +109,9 @@ namespace LearningMassTransit.DataAccess.Migrations
                     b.Property<Guid>("WorkflowId")
                         .HasColumnType("uuid");
 
+                    b.Property<int>("Actie")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -119,9 +122,6 @@ namespace LearningMassTransit.DataAccess.Migrations
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<int>("WorkflowActie")
-                        .HasColumnType("integer");
 
                     b.Property<int>("WorkflowType")
                         .HasColumnType("integer");

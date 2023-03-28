@@ -45,7 +45,7 @@ public class GetWorkflowsRequestHandler : IRequestHandler<GetWorkflowsRequest, G
     {
         if (workflow.WorkflowType == WorkflowTypeEnum.Complex)
         {
-            return workflow.WorkflowActie.ToString();
+            return workflow.Actie.ToString();
         }
         return workflow.AtomaireActieState?.Actie;
     }
@@ -57,7 +57,7 @@ public class GetWorkflowsRequestHandler : IRequestHandler<GetWorkflowsRequest, G
             return workflow.AtomaireActieState?.CurrentState;
         }
 
-        switch (workflow.WorkflowActie)
+        switch (workflow.Actie)
         {
             case WorkflowActieEnum.NieuwAdresMetStatusWijziging: return workflow.VoorstellenAdresState?.CurrentState;
             default: return "?";

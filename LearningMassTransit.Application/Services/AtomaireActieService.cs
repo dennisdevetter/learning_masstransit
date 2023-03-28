@@ -47,7 +47,7 @@ public class AtomaireActieService : IAtomaireActieService
             UserId = userId,
             Data = data,
             CreationDate = DateTime.UtcNow,
-            WorkflowActie = (Domain.Lara.WorkflowActieEnum)actie,
+            Actie = (Domain.Lara.WorkflowActieEnum)actie,
             WorkflowType = WorkflowTypeEnum.Atomair
         };
 
