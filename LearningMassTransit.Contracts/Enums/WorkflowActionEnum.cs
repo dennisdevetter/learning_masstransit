@@ -1,7 +1,14 @@
 ﻿namespace LearningMassTransit.Contracts.Enums;
 
-public enum WorkflowActionEnum
+public enum WorkflowActieEnum
 {
-    AtomaireActie = 0,
-    NieuwAdresMetStatusWijziging = 1,
+    None = 0,
+    
+    /* atomaire acties */
+    ProposeStreetName = 100,
+    ApproveAddress = 101,
+    RejectAddress = 102,
+
+    /* complexe acties */
+    NieuwAdresMetStatusWijziging = 300
 }

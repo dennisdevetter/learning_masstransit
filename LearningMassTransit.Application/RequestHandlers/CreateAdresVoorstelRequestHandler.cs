@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using LearningMassTransit.Application.Services;
 using LearningMassTransit.Contracts.Dtos;
+using LearningMassTransit.Contracts.Enums;
 using LearningMassTransit.Contracts.Requests;
 using LearningMassTransit.Contracts.Responses;
 using MediatR;
@@ -23,9 +24,11 @@ public class CreateAdresVoorstelRequestHandler : IRequestHandler<CreateAdresVoor
 
     public async Task<CreateAdresVoorstelResponse> Handle(CreateAdresVoorstelRequest request, CancellationToken cancellationToken)
     {
-        var data = JsonConvert.SerializeObject(request.Adres);
+        var actie = WorkflowActieEnum.ProposeStreetName;
 
-        var output = await _atomaireActieService.Execute(data, (correlationId) => DoAction(request, correlationId, cancellationToken), cancellationToken);
+        var data = JsonConvert.SerializeObject(request.Adres);
+        
+        var output = await _atomaireActieService.Execute(actie,  data, (correlationId) => DoAction(request, correlationId, cancellationToken), cancellationToken);
 
         return new CreateAdresVoorstelResponse(output.WorkflowId);
     }

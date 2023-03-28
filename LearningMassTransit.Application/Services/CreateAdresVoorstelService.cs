@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using LearningMassTransit.Contracts.Dtos;
 using LearningMassTransit.Infrastructure.Messaging;
 using LearningMassTransit.Messaging.Lara;
-using ActieEnum = LearningMassTransit.Contracts.Enums.ActieEnum;
+using WorkflowActieEnum = LearningMassTransit.Contracts.Enums.WorkflowActieEnum;
 
 namespace LearningMassTransit.Application.Services;
 
@@ -34,7 +34,7 @@ public class CreateAdresVoorstelService : ICreateAdresVoorstelService
 
         var ticket = await _ticketService.CreateTicket(
             ticketId, 
-            ActieEnum.ProposeStreetName, 
+            WorkflowActieEnum.ProposeStreetName, 
             correlationId, 
             cancellationToken
         );

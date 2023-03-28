@@ -19,7 +19,7 @@ public class WorkflowConfiguration : IEntityTypeConfiguration<Workflow>
         
         builder.Property(b => b.UserId).IsRequired();
         builder.Property(b => b.CreationDate).IsRequired();
-        builder.Property(b => b.WorkflowAction).IsRequired();
+        builder.Property(b => b.WorkflowActie).IsRequired();
         builder.Property(b => b.WorkflowType).IsRequired();
         builder.Property(b => b.Data).IsRequired();
 

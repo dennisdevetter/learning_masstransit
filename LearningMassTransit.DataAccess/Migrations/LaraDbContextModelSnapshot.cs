@@ -120,7 +120,7 @@ namespace LearningMassTransit.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("WorkflowAction")
+                    b.Property<int>("WorkflowActie")
                         .HasColumnType("integer");
 
                     b.Property<int>("WorkflowType")

@@ -6,6 +6,7 @@ using LearningMassTransit.Domain;
 using LearningMassTransit.Domain.Lara;
 using LearningMassTransit.Infrastructure.Messaging;
 using LearningMassTransit.Messaging.Lara;
+using WorkflowActieEnum = LearningMassTransit.Contracts.Enums.WorkflowActieEnum;
 
 namespace LearningMassTransit.Application.Services;
 
@@ -20,9 +21,9 @@ public class AtomaireActieService : IAtomaireActieService
         _laraUnitOfWork = laraUnitOfWork;
     }
 
-    public async Task<AtomaireActieOutputDto> Execute(string data, Func<Guid, Task<TicketDto>> executor, CancellationToken cancellationToken)
+    public async Task<AtomaireActieOutputDto> Execute(WorkflowActieEnum actie, string data, Func<Guid, Task<TicketDto>> executor, CancellationToken cancellationToken)
     {
-        var workflow = await CreateWorkflow(data, cancellationToken);
+        var workflow = await CreateWorkflow(actie,data, cancellationToken);
 
         var ticket = await executor(workflow.WorkflowId);
 
@@ -36,7 +37,7 @@ public class AtomaireActieService : IAtomaireActieService
         };
     }
 
-    private async Task<Workflow> CreateWorkflow(string data, CancellationToken cancellationToken)
+    private async Task<Workflow> CreateWorkflow(WorkflowActieEnum actie, string data,  CancellationToken cancellationToken)
     {
         var userId = "7D35AFD6933D4049BD17A4560BA30674";
 
@@ -46,7 +47,7 @@ public class AtomaireActieService : IAtomaireActieService
             UserId = userId,
             Data = data,
             CreationDate = DateTime.UtcNow,
-            WorkflowAction = WorkflowActionEnum.AtomaireActie,
+            WorkflowActie = (Domain.Lara.WorkflowActieEnum)actie,
             WorkflowType = WorkflowTypeEnum.Atomair
         };
 

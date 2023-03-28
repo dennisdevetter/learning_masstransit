@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LearningMassTransit.DataAccess.Migrations
 {
     [DbContext(typeof(LaraDbContext))]
-    [Migration("20230327072537_InitialCreate")]
+    [Migration("20230328073913_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -122,7 +122,7 @@ namespace LearningMassTransit.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("WorkflowAction")
+                    b.Property<int>("WorkflowActie")
                         .HasColumnType("integer");
 
                     b.Property<int>("WorkflowType")

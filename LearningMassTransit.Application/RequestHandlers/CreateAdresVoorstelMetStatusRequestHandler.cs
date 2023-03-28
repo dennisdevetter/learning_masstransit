@@ -44,7 +44,7 @@ public class CreateAdresVoorstelMetStatusRequestHandler : IRequestHandler<Create
             UserId = userId,
             Data = JsonConvert.SerializeObject(metStatusRequest.Adres),
             CreationDate = DateTime.UtcNow,
-            WorkflowAction = WorkflowActionEnum.NieuwAdresMetStatusWijziging,
+            WorkflowActie = WorkflowActieEnum.NieuwAdresMetStatusWijziging,
             WorkflowType = WorkflowTypeEnum.Complex
         };
 

@@ -5,7 +5,7 @@ using LearningMassTransit.Application.Mappers;
 using LearningMassTransit.Contracts.Dtos;
 using LearningMassTransit.Domain;
 using LearningMassTransit.Domain.Lara;
-using ActieEnum = LearningMassTransit.Contracts.Enums.ActieEnum;
+using WorkflowActieEnum = LearningMassTransit.Contracts.Enums.WorkflowActieEnum;
 
 namespace LearningMassTransit.Application.Services;
 
@@ -18,12 +18,12 @@ public class TicketService : ITicketService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<TicketDto> CreateTicket(string ticketId, ActieEnum actie, Guid correlationId, CancellationToken cancellationToken)
+    public async Task<TicketDto> CreateTicket(string ticketId, WorkflowActieEnum actie, Guid correlationId, CancellationToken cancellationToken)
     {
         var ticket = new Ticket
         {
             CorrelationId = correlationId,
-            Actie = (Domain.Lara.ActieEnum)actie,
+            Actie = (Domain.Lara.WorkflowActieEnum)actie,
             CreationDate = DateTime.UtcNow,
             Status = TicketStatusEnum.Waiting,
             TicketId = ticketId,

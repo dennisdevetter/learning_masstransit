@@ -44,13 +44,13 @@ public class TicketPollingJob : IJob
     {
         switch (ticket.Actie)
         {
-            case ActieEnum.None:
+            case WorkflowActieEnum.None:
                 break;
-            case ActieEnum.ProposeStreetName:
+            case WorkflowActieEnum.ProposeStreetName:
                 await ProcessProposeStreetName(context, ticket);
                 break;
-            case ActieEnum.ApproveAddress:
-            case ActieEnum.RejectAddress:
+            case WorkflowActieEnum.ApproveAddress:
+            case WorkflowActieEnum.RejectAddress:
                 await ProcessChangeAddressStatus(context, ticket);
                 break;
             default:

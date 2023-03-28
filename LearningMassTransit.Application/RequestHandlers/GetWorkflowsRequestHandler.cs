@@ -45,18 +45,22 @@ public class GetWorkflowsRequestHandler : IRequestHandler<GetWorkflowsRequest, G
     {
         if (workflow.WorkflowType == WorkflowTypeEnum.Complex)
         {
-            return workflow.WorkflowAction.ToString();
+            return workflow.WorkflowActie.ToString();
         }
         return workflow.AtomaireActieState?.Actie;
     }
 
     private string? MapStatus(Workflow workflow)
     {
-        switch (workflow.WorkflowAction)
+        if (workflow.WorkflowType == WorkflowTypeEnum.Atomair)
         {
-            case WorkflowActionEnum.NieuwAdresMetStatusWijziging: return workflow.VoorstellenAdresState?.CurrentState;
-            case WorkflowActionEnum.AtomaireActie: return workflow.AtomaireActieState?.CurrentState;
-            default: return null;
+            return workflow.AtomaireActieState?.CurrentState;
+        }
+
+        switch (workflow.WorkflowActie)
+        {
+            case WorkflowActieEnum.NieuwAdresMetStatusWijziging: return workflow.VoorstellenAdresState?.CurrentState;
+            default: return "?";
         }
     }
 }

@@ -7,7 +7,7 @@ using LearningMassTransit.Contracts.Responses;
 using LearningMassTransit.Domain;
 using LearningMassTransit.Domain.Lara;
 using MediatR;
-using ActieEnum = LearningMassTransit.Contracts.Enums.ActieEnum;
+using ActieEnum = LearningMassTransit.Contracts.Enums.WorkflowActieEnum;
 using TicketStatusEnum = LearningMassTransit.Contracts.Enums.TicketStatusEnum;
 
 namespace LearningMassTransit.Application.RequestHandlers;

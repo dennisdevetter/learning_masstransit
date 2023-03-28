@@ -38,7 +38,7 @@ namespace LearningMassTransit.DataAccess.Migrations
                     WorkflowId = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<string>(type: "text", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    WorkflowAction = table.Column<int>(type: "integer", nullable: false),
+                    WorkflowActie = table.Column<int>(type: "integer", nullable: false),
                     WorkflowType = table.Column<int>(type: "integer", nullable: false),
                     Data = table.Column<string>(type: "text", nullable: false)
                 },

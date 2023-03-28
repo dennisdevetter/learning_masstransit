@@ -3,11 +3,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using LearningMassTransit.Contracts.Dtos;
 using LearningMassTransit.Contracts.Enums;
-using LearningMassTransit.Domain;
-using LearningMassTransit.Domain.Lara;
 using LearningMassTransit.Infrastructure.Messaging;
 using LearningMassTransit.Messaging.Lara;
-using ActieEnum = LearningMassTransit.Contracts.Enums.ActieEnum;
+using WorkflowActieEnum = LearningMassTransit.Contracts.Enums.WorkflowActieEnum;
 
 namespace LearningMassTransit.Application.Services;
 
@@ -46,13 +44,13 @@ public class ChangeAdresStatusService : IChangeAdresStatusService
         return ticket;
     }
 
-    private ActieEnum MapToActie(ChangeAdresStatusDto changeAdresStatusDto)
+    private WorkflowActieEnum MapToActie(ChangeAdresStatusDto changeAdresStatusDto)
     {
         if (changeAdresStatusDto.Status == AdresStatusEnum.InGebruik)
         {
-            return ActieEnum.ApproveAddress;
+            return WorkflowActieEnum.ApproveAddress;
         }
 
-        return ActieEnum.RejectAddress;
+        return WorkflowActieEnum.RejectAddress;
     }
 }
